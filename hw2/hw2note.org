@@ -1,0 +1,4 @@
+* Maximum Likelihood Estimation
+
+This has a good general MLE suggestion.
+http://www.autonlab.org/tutorials/mle13.pdf

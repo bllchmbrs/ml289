@@ -1,0 +1,213 @@
+% Created 2015-09-23 Wed 11:52
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage[margin=1in]{geometry}
+\author{Bill Chambers}
+\date{\today}
+\title{HOMEWORK 1}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 24.4.1 (Org mode 8.2.10)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+
+\section{Problem 1 Solution}
+\label{sec-1}
+CDF = $\int$ f(x) dx
+
+= $\int$ \tfrac{2}{\pi(1+x^2)}dx
+
+= \tfrac{2}{\pi}$\int$ \tfrac{2}{1+x^2}dx
+
+= \tfrac{2}{\pi}tan$^{\text{-1}}$(x)
+
+\rule{\linewidth}{0.5pt}
+
+Now we just need to evaluate this for each interval. Keep in mind that each of these need to be multiplied by 2/$\pi$.
+
+tan$^{\text{-1}}$(0) = 0
+
+tan$^{\text{-1}}$(1/\sqrt{3}) = $\pi$/6
+
+tan$^{\text{-1}}$(1) = $\pi$/4
+
+tan$^{\text{-1}}$(\sqrt{3}) = $\pi$/3
+
+\rule{\linewidth}{0.5pt}
+
+We know that $\int$$_{\text{a}}$$_{\text{b}}$ f(x)dx = F(b) - F(a). So we can use that to get our probabilities.
+
+\rule{\linewidth}{0.5pt}
+
+For the interval from 0 -> 1/\sqrt{3}
+
+2/$\pi$ * $\pi$/6 - 0 = 2/6
+
+
+\rule{\linewidth}{0.5pt}
+
+For the interval from 1/\sqrt{3} -> 1
+
+2/$\pi$ * $\pi$/4 - 2/$\pi$ * $\pi$/6 = 1/6
+
+
+\rule{\linewidth}{0.5pt}
+
+For the interval from 1 -> \sqrt{3}
+
+2/$\pi$ * $\pi$/3 - 2/$\pi$ * $\pi$/4 = 1/6
+
+
+Now that we have those values we can go about calculating the expectation which is simply the probabilities of each of those happening (that we calculated above) multiplied by the point values in order to get the expected value.
+
+4/6 + 3/6 + 2/6 = \tfrac{13}{6}
+
+\section{Problem 2}
+\label{sec-2}
+
+All sums/products are over N.
+
+P(x$_{\text{i}}$ | $\theta$) = $\theta$ e$^{\text{-}\theta\ \text{x}}$
+
+lik($\theta$) = $\prod$$^{\text{n}}$ p(x$_{\text{i}}$ |$\theta$)
+
+= $\sum$ log(p(x$_{\text{i}}$ |$\theta$))
+
+= $\sum$ log($\theta$) - $\theta$ x$_{\text{i}}$
+
+= n log($\theta$) - $\sum$ $\theta$ x$_{\text{i}}$
+
+\rule{\linewidth}{0.5pt}
+
+Now we can set the derivative equal to 0 to get the maximum likelihood.
+
+max. lik($\theta$) = $\partial$ y / $\partial$ $\theta$ = 0
+
+\rule{\linewidth}{0.5pt}
+
+= \tfrac{\partial n log(\theta) - \sum \theta x_i}{\partial \theta} = 0
+
+= n/$\theta$ - $\sum$ x$_{\text{i}}$ = 0
+
+= \tfrac{n}{\theta} = $\sum$ x$_{\text{i}}$
+
+= n/ $\sum$ x$_{\text{i}}$ = $\theta$
+
+= \tfrac{5}{5.7} = $\theta$
+
+
+\section{Problem 3}
+\label{sec-3}
+
+
+\section{Problem 4}
+\label{sec-4}
+\subsection{a}
+\label{sec-4-1}
+i and j are equal to the rows and columns of the vectors respectively.
+
+x$^{\text{T}}$ A x = $\sum$$_{\text{j=1}}^{\text{n}}$ $\sum$$_{\text{i=1}}^{\text{n}}$ a$_{\text{j}}^{\text{i}}$ x$_{\text{i}}$ x$_{\text{j}}$
+
+
+\subsection{b}
+\label{sec-4-2}
+
+Let x be all vectors such that we have all vectors that have a 1 in one specific place and zero in all the others. For example,
+
+\begin{bmatrix} 1\\ 0\\ 0\end{bmatrix}
+\begin{bmatrix} 0\\ 1\\ 0\end{bmatrix}
+\begin{bmatrix} 0\\ 0\\ 1\end{bmatrix}
+
+But continued for the length of N so that we can perform x$^{\text{T}}$ A x. These vectors exist so that they can extract the diagonal values of matrix A. Given that x$^{\text{T}}$ A x is necessarily greater than 0 for all vectors non-zero x, the diagonal elements have to be positive or else we've invalidated the fact that x$^{\text{T}}$ A x > 0. Quite simply, the only way that x$^{\text{T}}$ A x can be negative or zero, is if A diagonal values are negative or zero because even if x is negative, it will still result in a positive value because it's squared as we saw in the previous summation.
+
+\section{Problem 5}
+\label{sec-5}
+
+From the previous problem we proved that if B is a positive definite matrix, then all the diagonal values have to be positive. If we repeat that proof along with the assertion that for p.s.d. x$^{\text{T}}$ Ax $\ge$ 0 we prove that all diagonal values in the p.s.d. matrix are greater than equal to 0.
+
+Using that, we can see that if we extract the minimum value from the diagonal of the lowest p.s.d. matrix B, then we will extract a 0 value (and no less). Secondly if we extract the minimum value from the smallest possible matrix of $\gamma$ I, that has to necessarily be positive if $\gamma$ > 0. Therefore the minimum value from the diagonal from matrix B added to the minimum value from the diagonal of matrix $\gamma$ I is necessarily positive. Since the minimum value has to be positive, then all the diagonals in B + $\gamma$ I are necessarily positive.
+
+Now we can apply the proof from the previous problem, that for all non-zero x, x$^{\text{T}}$ Ax must be greater than 0. Our newly created matrix (B + $\gamma$ I) satisfies this requirement because the only way that it would be $\le$ 0 would be in one of the diagonal elements is 0 or negative. We just proved that our matrix B + $\gamma$ I cannot have 0 or negative diagonal elements, therefore our matrix is now positive definite.
+
+
+\section{Problem 6}
+\label{sec-6}
+
+\section{Problem 7}
+\label{sec-7}
+\subsection{Part a}
+\label{sec-7-1}
+
+R[w] = $\Lambda$ (Xw - y)$^{\text{2}}$
+
+\subsection{Part b}
+\label{sec-7-2}
+\emph{In this part, X' == X$^{\text{T}}$, the ' is equal to the transpose.}
+
+R[w] = $\Lambda$ (Xw - y)$^{\text{2}}$
+
+= (Xw - y)$^{\text{T}}$ $\Lambda$ (Xw - y)
+
+= w'X' $\Lambda$ XW - y' $\Lambda$ Xw - y' $\Lambda$ y - w'X' $\Lambda$ y
+
+\emph{we can transpose the last term to get the middle term}
+
+= w'X' $\Lambda$ XW - 2y' $\Lambda$ Xw - y' $\Lambda$ y
+
+\rule{\linewidth}{0.5pt}
+Now we can take the derivative w.r.t the weights of the above statement and set it to 0 to minimize the risk.
+
+0 = \tfrac{\partial (w'X' \Lambda XW - 2y' \Lambda Xw - y' \Lambda y)}{\partial w}
+
+0 = \tfrac{ \partial w'X' \Lambda Xw}{\partial w} - 2 \tfrac{\partial y' \Lambda Xw}{\partial w} - \tfrac{ \partial y' \Lambda y}{\partial w}
+
+\emph{remove the last term\ldots{}}
+
+0 = \tfrac{ \partial w'X' \Lambda Xw}{\partial w} - 2 \tfrac{\partial y' \Lambda Xw}{\partial w}
+
+now set $\beta$ = X' $\Lambda$ X and and $\alpha$ = y' $\Lambda$ X
+
+0 = \tfrac{ \partial w \beta w}{\partial w} - 2 \tfrac{\partial \alpha w}{\partial w}
+
+\emph{from our identities and the previous problem we can derive these easily.}
+
+0 = ($\beta$ + $\beta$$^{\text{T}}$)w  - 2 $\alpha$$^{\text{T}}$
+
+\emph{now we can fill back in the $\beta$ and $\alpha$}
+
+0 = 2X' $\Lambda$ Xw - 2X' $\Lambda$ y
+
+X' $\Lambda$ y = X' $\Lambda$ Xw
+
+w = (X' $\Lambda$ X)$^{\text{-1}}$ X' $\Lambda$ y
+
+\subsection{Part c}
+\label{sec-7-3}
+
+
+
+
+\section{Problem 8}
+\label{sec-8}
+% Emacs 24.4.1 (Org mode 8.2.10)
+\end{document}
