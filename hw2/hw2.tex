@@ -1,4 +1,4 @@
-% Created 2015-09-23 Wed 11:52
+% Created 2015-09-23 Wed 18:06
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -118,7 +118,11 @@ max. lik($\theta$) = $\partial$ y / $\partial$ $\theta$ = 0
 
 \section{Problem 3}
 \label{sec-3}
-
+\subsection{Part a}
+\label{sec-3-1}
+\subsection{Part b}
+\label{sec-3-2}
+Cross validation and leveraging that to tune hyperparameters. We want to get something that generalizes well and doesn't just minimize the empirical risk but rather the generalized risk.
 
 \section{Problem 4}
 \label{sec-4}
@@ -149,9 +153,70 @@ Using that, we can see that if we extract the minimum value from the diagonal of
 
 Now we can apply the proof from the previous problem, that for all non-zero x, x$^{\text{T}}$ Ax must be greater than 0. Our newly created matrix (B + $\gamma$ I) satisfies this requirement because the only way that it would be $\le$ 0 would be in one of the diagonal elements is 0 or negative. We just proved that our matrix B + $\gamma$ I cannot have 0 or negative diagonal elements, therefore our matrix is now positive definite.
 
-
 \section{Problem 6}
 \label{sec-6}
+\subsection{Part a}
+\label{sec-6-1}
+
+x$^{\text{T}}$ a = $\sum$$_{\text{i=1}}^{\text{n}}$ x$_{\text{i}}$ * a$_{\text{i}}$
+
+$$ \dfrac{ \partial \sum_{i=1}^{n} x_i * a_i }{ \partial [x_1 .... x_n] }$$
+
+Derive it component by component and you get the vector a.
+
+\subsection{Part b}
+\label{sec-6-2}
+
+x$^{\text{T}}$ A x = $\sum$$_{\text{j=1}}^{\text{n}}$ $\sum$$_{\text{i=1}}^{\text{n}}$ a$_{\text{j}}^{\text{i}}$ x$_{\text{i}}$ x$_{\text{j}}$
+
+$$ \dfrac{ \partial \sum_{j=1}^{n} \sum_{i=1}^{n} a_j^i x_i x_j }{ \partial [x_1 .... x_n] }$$
+
+When you derive it component by component you end up with the derivatives of x on the columns added to the derivatives of x on the rows of matrix A (since x$^{\text{T}}$ affects rows and x affects columns).
+
+Ax + A$^{\text{T}}$ x
+
+\subsection{Part c}
+\label{sec-6-3}
+$$ \dfrac{ \partial Trace(XA)}{ \partial X} $$
+
+$$ Trace(XA) == \sum (XA)_{ii} == \sum_{i=1}^{n} \sum_{j=1}^{n} x_{ij} a_{ji} $$
+
+Now when we look at the derivative w.r.t. X\ldots{}.
+
+$$ \dfrac{\partial \sum_{i=1}^{n} \sum_{j=1}^{n} x_{ij} a_{ji}}{ \partial \begin{bmatrix}
+x_{1,1} &...  & x_{1,n} \\
+... & ...  & ...\\
+x_{n,1} & ... & x_{n,n}
+\end{bmatrix} } $$
+
+We can see that we're ending up with the values of A, however they're transposed because of our trace summation identity.
+
+So the answer is $$A^T$$
+
+\subsection{Part d}
+\label{sec-6-4}
+
+$$ a^T X b = \sum_{j=1}^{m} \sum_{i=1}^{n} X_{ji} * a_{i} * b_{j} $$
+
+$$ \dfrac{ \partial \sum_{j=1}^{m} \sum_{i=1}^{n} X_{ji} * a_{i} * b_{j}}{ \partial \begin{bmatrix}
+x_{1,1} &...  & x_{1,n} \\
+... & ...  & ...\\
+x_{m,1} & ... & x_{m,n}
+\end{bmatrix} } $$
+
+Since we know that the output matrix has to be m x n and we derive out component by component we end up with a tensor or outer product of a and b. However since they are of dimensions m x 1 and n x 1 respectively, we need to transpose one in order to make the format work. Therefore we end up with $$ ab^T $$
+
+\subsection{Part e}
+\label{sec-6-5}
+To prove ||x ||$_{\text{2}}$ $\le$ ||x||$_{\text{1}}$
+Given x's greater than or equal to 1, less than or equal to 1, or equal to 0. The root of the sum of squares is equal to the sum of absolute values.
+
+Given x's less than 1 and greater than -1 and not equal to 0. The root of the sum of squares is always less than the sum of absolute values because x$^{\text{2}}$ < x given the aforementioned x requirements.
+
+Therefore x is any and all real numbers, any combination will make it so that ||x ||$_{\text{2}}$ $\le$ ||x||$_{\text{1}}$.
+
+\rule{\linewidth}{0.5pt}
+
 
 \section{Problem 7}
 \label{sec-7}
@@ -204,10 +269,38 @@ w = (X' $\Lambda$ X)$^{\text{-1}}$ X' $\Lambda$ y
 \subsection{Part c}
 \label{sec-7-3}
 
+R[w] = $\Lambda$ (Xw - y)$^{\text{2}}$ + $\gamma$ w'w
 
+\rule{\linewidth}{0.5pt}
+
+Now we just need to add in another term to the end of our derivation.
+
+0 = 2X' $\Lambda$ Xw - 2X' $\Lambda$ y + \tfrac{\partial \gamma w'w}{\partial w}
+
+0 = 2X' $\Lambda$ Xw - 2X' $\Lambda$ y + 2 $\gamma$ w
+
+\emph{remove all 2's}
+
+X' $\Lambda$ y = X' $\Lambda$ Xw + $\gamma$ w
+
+\emph{we can bring in the identity matrix because AI = A}
+
+X' $\Lambda$ y = (X' $\Lambda$ X + $\gamma$ I )w
+
+w = (X' $\Lambda$ X + $\gamma$ I)$^{\text{-1}}$ X' $\Lambda$ y
+
+\subsection{part d}
+\label{sec-7-4}
 
 
 \section{Problem 8}
 \label{sec-8}
+
+\subsection{Part a}
+\label{sec-8-1}
+
+\subsection{Part b}
+\label{sec-8-2}
+If there is no loss when choosing doubt, the risk minimization that takes place will mean that the lowest risk choice is always doubt - making our algorithm useless. If the doubt cost is greater than the mis-classification cost then our algorithm will always take a guess at classifying the example and will never go with doubt. This is a way of forcing our algorithm to take a guess and what class something should belong to.
 % Emacs 24.4.1 (Org mode 8.2.10)
 \end{document}
