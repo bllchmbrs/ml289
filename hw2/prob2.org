@@ -1,0 +1,31 @@
+* Problem 2
+
+All sums/products are over N.
+
+P(x_i | \theta) = \theta e^{-\theta x}
+
+lik(\theta) = \prod^n p(x_i |\theta)
+
+= \sum log(p(x_i |\theta))
+
+= \sum log(\theta) - \theta x_i
+
+= n log(\theta) - \sum \theta x_i
+
+-----
+
+Now we can set the derivative equal to 0 to get the maximum likelihood.
+
+max. lik(\theta) = \partial y / \partial \theta = 0
+
+-----
+
+= \tfrac{\partial n log(\theta) - \sum \theta x_i}{\partial \theta} = 0
+
+= n/\theta - \sum x_i = 0
+
+= \tfrac{n}{\theta} = \sum x_i
+
+= n/ \sum x_i = \theta
+
+= \tfrac{5}{5.7} = \theta

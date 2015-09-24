@@ -1,0 +1,5 @@
+* Problem 3
+** Part a
+
+** Part b
+Cross validation and leveraging that to tune hyperparameters. We want to get something that generalizes well and doesn't just minimize the empirical risk but rather the generalized risk.

@@ -1,0 +1,7 @@
+* Problem 5
+
+From the previous problem we proved that if B is a positive definite matrix, then all the diagonal values have to be positive. If we repeat that proof along with the assertion that for p.s.d. x^T Ax \geq 0 we prove that all diagonal values in the p.s.d. matrix are greater than equal to 0.
+
+Using that, we can see that if we extract the minimum value from the diagonal of the lowest p.s.d. matrix B, then we will extract a 0 value (and no less). Secondly if we extract the minimum value from the smallest possible matrix of \gamma I, that has to necessarily be positive if \gamma > 0. Therefore the minimum value from the diagonal from matrix B added to the minimum value from the diagonal of matrix \gamma I is necessarily positive. Since the minimum value has to be positive, then all the diagonals in B + \gamma I are necessarily positive.
+
+Now we can apply the proof from the previous problem, that for all non-zero x, x^T Ax must be greater than 0. Our newly created matrix (B + \gamma I) satisfies this requirement because the only way that it would be \leq 0 would be in one of the diagonal elements is 0 or negative. We just proved that our matrix B + \gamma I cannot have 0 or negative diagonal elements, therefore our matrix is now positive definite.

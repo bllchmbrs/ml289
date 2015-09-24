@@ -1,0 +1,68 @@
+* Problem 7
+** Part a
+
+R[w] = \Lambda (Xw - y)^2
+
+** Part b
+/In this part, X' == X^T, the ' is equal to the transpose./
+
+R[w] = \Lambda (Xw - y)^2
+
+= (Xw - y)^T \Lambda (Xw - y)
+
+= w'X' \Lambda XW - y' \Lambda Xw - y' \Lambda y - w'X' \Lambda y
+
+/we can transpose the last term to get the middle term/
+
+= w'X' \Lambda XW - 2y' \Lambda Xw - y' \Lambda y
+
+-----
+Now we can take the derivative w.r.t the weights of the above statement and set it to 0 to minimize the risk.
+
+0 = \tfrac{\partial (w'X' \Lambda XW - 2y' \Lambda Xw - y' \Lambda y)}{\partial w}
+
+0 = \tfrac{ \partial w'X' \Lambda Xw}{\partial w} - 2 \tfrac{\partial y' \Lambda Xw}{\partial w} - \tfrac{ \partial y' \Lambda y}{\partial w}
+
+/remove the last term.../
+
+0 = \tfrac{ \partial w'X' \Lambda Xw}{\partial w} - 2 \tfrac{\partial y' \Lambda Xw}{\partial w}
+
+now set \beta = X' \Lambda X and and \alpha = y' \Lambda X
+
+0 = \tfrac{ \partial w \beta w}{\partial w} - 2 \tfrac{\partial \alpha w}{\partial w}
+
+/from our identities and the previous problem we can derive these easily./
+
+0 = (\beta + \beta^T)w  - 2 \alpha^T
+
+/now we can fill back in the \beta and \alpha/
+
+0 = 2X' \Lambda Xw - 2X' \Lambda y
+
+X' \Lambda y = X' \Lambda Xw
+
+w = (X' \Lambda X)^{-1} X' \Lambda y
+
+** Part c
+
+R[w] = \Lambda (Xw - y)^2 + \gamma w'w
+
+------
+
+Now we just need to add in another term to the end of our derivation.
+
+0 = 2X' \Lambda Xw - 2X' \Lambda y + \tfrac{\partial \gamma w'w}{\partial w}
+
+0 = 2X' \Lambda Xw - 2X' \Lambda y + 2 \gamma w
+
+/remove all 2's/
+
+X' \Lambda y = X' \Lambda Xw + \gamma w
+
+/we can bring in the identity matrix because AI = A/
+
+X' \Lambda y = (X' \Lambda X + \gamma I )w
+
+w = (X' \Lambda X + \gamma I)^{-1} X' \Lambda y
+
+** part d

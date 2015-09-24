@@ -1,0 +1,57 @@
+* Problem 6
+** Part a
+
+x^T a = \sum_{i=1}^{n} x_i * a_i
+
+$$ \dfrac{ \partial \sum_{i=1}^{n} x_i * a_i }{ \partial [x_1 .... x_n] }$$
+
+Derive it component by component and you get the vector a.
+
+** Part b
+
+x^T A x = \sum_{j=1}^{n} \sum_{i=1}^{n} a_j^i x_i x_j
+
+$$ \dfrac{ \partial \sum_{j=1}^{n} \sum_{i=1}^{n} a_j^i x_i x_j }{ \partial [x_1 .... x_n] }$$
+
+When you derive it component by component you end up with the derivatives of x on the columns added to the derivatives of x on the rows of matrix A (since x^T affects rows and x affects columns).
+
+Ax + A^T x
+
+** Part c
+$$ \dfrac{ \partial Trace(XA)}{ \partial X} $$
+
+$$ Trace(XA) == \sum (XA)_{ii} == \sum_{i=1}^{n} \sum_{j=1}^{n} x_{ij} a_{ji} $$
+
+Now when we look at the derivative w.r.t. X....
+
+$$ \dfrac{\partial \sum_{i=1}^{n} \sum_{j=1}^{n} x_{ij} a_{ji}}{ \partial \begin{bmatrix}
+x_{1,1} &...  & x_{1,n} \\
+... & ...  & ...\\
+x_{n,1} & ... & x_{n,n}
+\end{bmatrix} } $$
+
+We can see that we're ending up with the values of A, however they're transposed because of our trace summation identity.
+
+So the answer is $$A^T$$
+
+** Part d
+
+$$ a^T X b = \sum_{j=1}^{m} \sum_{i=1}^{n} X_{ji} * a_{i} * b_{j} $$
+
+$$ \dfrac{ \partial \sum_{j=1}^{m} \sum_{i=1}^{n} X_{ji} * a_{i} * b_{j}}{ \partial \begin{bmatrix}
+x_{1,1} &...  & x_{1,n} \\
+... & ...  & ...\\
+x_{m,1} & ... & x_{m,n}
+\end{bmatrix} } $$
+
+Since we know that the output matrix has to be m x n and we derive out component by component we end up with a tensor or outer product of a and b. However since they are of dimensions m x 1 and n x 1 respectively, we need to transpose one in order to conform to the proper dimensions. Therefore we end up with $$ ab^T $$.
+
+** Part e
+To prove ||x ||_2 \leq ||x||_1
+Given x's greater than or equal to 1, less than or equal to 1, or equal to 0. The root of the sum of squares is equal to the sum of absolute values.
+
+Given x's less than 1 and greater than -1 and not equal to 0. The root of the sum of squares is always less than the sum of absolute values because x^2 < x given the aforementioned x requirements.
+
+Therefore x is any and all real numbers, any combination will make it so that ||x ||_2 \leq ||x||_1.
+
+-------

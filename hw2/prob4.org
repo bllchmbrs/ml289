@@ -1,0 +1,15 @@
+* Problem 4
+** a
+i and j are equal to the rows and columns of the vectors respectively.
+
+x^T A x = \sum_{j=1}^{n} \sum_{i=1}^{n} a_j^i x_i x_j
+
+
+** b
+Let x be all vectors such that we have all vectors that have a 1 in one specific place and zero in all the others. For example,
+
+\begin{bmatrix} 1\\ 0\\ 0\end{bmatrix}
+\begin{bmatrix} 0\\ 1\\ 0\end{bmatrix}
+\begin{bmatrix} 0\\ 0\\ 1\end{bmatrix}
+
+But continued for the length of N so that we can perform x^T A x. These vectors exist so that they can extract the diagonal values of matrix A. Given that x^T A x is necessarily greater than 0 for all vectors non-zero x, the diagonal elements have to be positive or else we've invalidated the fact that x^T A x > 0. Quite simply, the only way that x^T A x can be negative or zero, is if A diagonal values are negative or zero because even if x is negative, it will still result in a positive value because it's squared as we saw in the previous summation.
