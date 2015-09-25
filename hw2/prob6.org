@@ -1,40 +1,58 @@
+#+AUTHOR: Bill Chambers :: StudentID:25912237
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+
 * Problem 6
 ** Part a
 
-x^T a = \sum_{i=1}^{n} x_i * a_i
+$$ x^T a = \sum_{i=1}^{n} x_i * a_i $$
 
 $$ \dfrac{ \partial \sum_{i=1}^{n} x_i * a_i }{ \partial [x_1 .... x_n] }$$
 
-Derive it component by component and you get the vector a.
+Derive it component by component and you get the vector:
+
+$$ a $$
 
 ** Part b
+/i = columns, j = rows/
+$$ x^T A x = \sum_{j=1}^{n} \sum_{i=1}^{n} a_{ji} x^T_i x_j $$
 
-x^T A x = \sum_{j=1}^{n} \sum_{i=1}^{n} a_j^i x_i x_j
+$$ \dfrac{ \partial \sum_{j=1}^{n} \sum_{i=1}^{n} a_{ji} x^T_i x_j }{ \partial [x_1 .... x_n] }$$
 
-$$ \dfrac{ \partial \sum_{j=1}^{n} \sum_{i=1}^{n} a_j^i x_i x_j }{ \partial [x_1 .... x_n] }$$
+This can be expressed as a summation as a sort of dot product like we see in the summation above
 
-When you derive it component by component you end up with the derivatives of x on the columns added to the derivatives of x on the rows of matrix A (since x^T affects rows and x affects columns).
+$$ a_{11} x_1^2 + ... + a_{nn} x_n^2 + (a_{12} + a_{21})x_1 x_2 + ... + (a_{n-1,n} + a_{n,n-1}) x_{n-1} x_{n} $$
 
-Ax + A^T x
+Which is all product combinations.
+
+When you derive it component by component you end up with the derivatives of x on the columns added to the derivatives of x on the rows of matrix A.(since x^T affects columns and x affects rows). You get the answer
+
+$$ Ax + A^T x $$
+
+or
+
+$$ (A + A^T)x $$
 
 ** Part c
+/i = columns, j = rows/
+
 $$ \dfrac{ \partial Trace(XA)}{ \partial X} $$
 
-$$ Trace(XA) == \sum (XA)_{ii} == \sum_{i=1}^{n} \sum_{j=1}^{n} x_{ij} a_{ji} $$
+$$ Trace(XA) == \sum_{i=1}^{n} (XA)_{ii} == \sum_{i=1}^{n} (\sum_{j=1}^{n} x_{ji} a_{ij}) $$
 
 Now when we look at the derivative w.r.t. X....
 
-$$ \dfrac{\partial \sum_{i=1}^{n} \sum_{j=1}^{n} x_{ij} a_{ji}}{ \partial \begin{bmatrix}
+$$ \dfrac{\partial \sum_{i=1}^{n} \sum_{j=1}^{n} x_{ji} a_{ij}}{ \partial \begin{bmatrix}
 x_{1,1} &...  & x_{1,n} \\
 ... & ...  & ...\\
 x_{n,1} & ... & x_{n,n}
 \end{bmatrix} } $$
 
-We can see that we're ending up with the values of A, however they're transposed because of our trace summation identity.
+We can see that we're ending up with the values of A, however they're transposed because of the trace summation identity shown above.
 
 So the answer is $$A^T$$
 
 ** Part d
+/i = columns, j = rows/
 
 $$ a^T X b = \sum_{j=1}^{m} \sum_{i=1}^{n} X_{ji} * a_{i} * b_{j} $$
 
@@ -44,14 +62,41 @@ x_{1,1} &...  & x_{1,n} \\
 x_{m,1} & ... & x_{m,n}
 \end{bmatrix} } $$
 
-Since we know that the output matrix has to be m x n and we derive out component by component we end up with a tensor or outer product of a and b. However since they are of dimensions m x 1 and n x 1 respectively, we need to transpose one in order to conform to the proper dimensions. Therefore we end up with $$ ab^T $$.
+Which, when we derive by components brings us to...
+
+$$  \begin{bmatrix} a_1 b_1 &...  & a_1 b_n \\
+... & ...  & ...\\
+a_m b_1 & ... & a_m b_n
+\end{bmatrix} } $$
+
+Leaving us with $$ab^T$$
 
 ** Part e
-To prove ||x ||_2 \leq ||x||_1
-Given x's greater than or equal to 1, less than or equal to 1, or equal to 0. The root of the sum of squares is equal to the sum of absolute values.
 
-Given x's less than 1 and greater than -1 and not equal to 0. The root of the sum of squares is always less than the sum of absolute values because x^2 < x given the aforementioned x requirements.
+$$ ||x||_2^2 = \sum^n_{i=1} x_i^2 $$
 
-Therefore x is any and all real numbers, any combination will make it so that ||x ||_2 \leq ||x||_1.
+$$ ||x||_1^2 = (\sum^n_{i=1} |x_i|)^2 $$
 
--------
+$$ ||x||_1^2 = [x_1 + x_2 + x_3, ..., x_n]^2 $$
+
+$$ ||x||_1^2 = x_1^2 + x_2^2 + 2x_1 x_2 .... 2 x_n x_{n-1} $$
+
+$$ ||x||_1^2 = \sum_{i=1}^{n} x_i^2 + 2 \sum_{i=1}^{n} \sum_{j=1}^{n} x_i x_j, i \neq j $$
+
+Therefore
+
+$$ \sqrt{\sum^n_{i=1} x_i^2} \leq \sqrt{\sum_{i=1}^{n} x_i^2 + 2 \sum_{i=1}^{n} \sum_{j=1}^{n} x_i x_j, i \neq j} $$
+
+-----
+
+$$ \sum_{i=1}^{n} x_i^2 + 2 \sum_{i=1}^{n} \sum_{j=1}^{n} x_i x_j, i \neq j} \leq n \sum_{i=1}^{n} x_i^2 $$
+
+$$ 2 \sum_{i=1}^{n} \sum_{j=1}^{n} x_i x_j, i \neq j} \leq n \sum_{i=1}^{n} x_i^2 - \sum_{i=1}^{n} x_i^2 $$
+
+$$ 2 \sum_{i=1}^{n} \sum_{j=1}^{n} x_i x_j, i \neq j} \leq (n-1) \sum_{i=1}^{n} x_i^2 $$
+
+or alternatively
+
+$$ \dfrac{\sum_{i=1}^{n} x_i^2}{n} + \dfrac{2 \sum_{i=1}^{n} \sum_{j=1}^{n} x_i x_j, i \neq j}{n} \leq  \sum_{i=1}^{n} x_i^2 $$
+
+Which is necessarily greater.

@@ -1,3 +1,6 @@
+#+AUTHOR: Bill Chambers :: StudentID:25912237
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+
 * Problem 1 Solution
 CDF = \int f(x) dx
 

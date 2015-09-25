@@ -1,27 +1,36 @@
-#+TITLE: HOMEWORK 1
-#+AUTHOR: Bill Chambers
+#+AUTHOR: Bill Chambers :: StudentID:25912237
 #+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+
+\newpage
 
 * Problem 1
 #+INCLUDE:prob1.org
+\newpage
+
 * Problem 2
-
 #+INCLUDE:prob2.org
+\newpage
+
 * Problem 3
-
 #+INCLUDE:prob3.org
+\newpage
+
 * Problem 4
-
 #+INCLUDE:prob4.org
+\newpage
+
 * Problem 5
-
 #+INCLUDE:prob5.org
+\newpage
+
 * Problem 6
-
 #+INCLUDE:prob6.org
+\newpage
+
 * Problem 7
-
 #+INCLUDE:prob7.org
-* Problem 8
+\newpage
 
+* Problem 8
 #+INCLUDE:prob8.org
+\newpage

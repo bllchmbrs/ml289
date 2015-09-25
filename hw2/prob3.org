@@ -1,5 +1,18 @@
+#+AUTHOR: Bill Chambers :: StudentID:25912237
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+
 * Problem 3
+
 ** Part a
+k(x,y) = (\sum_{i=1}^{n} x_i y_i +c )^2
+
+= ((x_1 y_1 +c) + ... + (x_n y_n + c))^2
+
+= x_1^2 y_1^2 + 2 x_1 y_1 x_2 y_2 + x_2^2 + x_2^2 + 2c x_1 y_1 + ... + c^2
+
+or expressed as a dot product of the vectors
+
+= (x_1^2, ...., x_n^2, y_1^2, ...., y_n^2, \sqrt{2}x_{n-2} x_{n-1}, ..., \sqrt{2c} x_n, c)
 
 ** Part b
 Cross validation and leveraging that to tune hyperparameters. We want to get something that generalizes well and doesn't just minimize the empirical risk but rather the generalized risk.

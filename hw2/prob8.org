@@ -1,5 +1,34 @@
+#+AUTHOR: Bill Chambers :: StudentID:25912237
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+
 * Problem 8
 ** Part a
+We basically have 3 requirements
+$$ P(w_i | x) \geq P(w_j | x)\ for\ all\ j $$
+$$ P(w_i | x) \geq 1 - \lambda_r / \lambda_s $$
+$$ \lambda_s  otherwise $$
+
+Now we know if we get a right answer, our cost will be zero. So if our model predicts that x is of class i and y is actually of class j and i=j, then our loss/cost is 0. Therefore, if we are confident above a certain threshold that we have this class, we should choose that class. However that's obviously not without risk...
+
+$$ R[choice_i | x] =  \lambda_s (1-P(w_i |x)) $$
+
+Here we can see that when the probability that we know the output class goes up than the risk of misclassification decreases. However if we're not confident, the risk of misclassification increases, as we can see in the first equation above. This proves our first requirement, assuming we think we have the right class (above a certain threshold) - we should choose that one to minimize our loss.
+
+But choosing doubt has its own risk.
+
+$$ R[choice_{i+1} |x] =  \lambda_r $$
+
+Now re-arranging these risk functions allows us to prove our second requirement.
+
+Logically, we're creating an inequality in that if it holds, we do one thing and if it doesn't, we do another. The risk of choosing doubt will be a function of the cost of misclassification along with the probability of making such a misclassification. If the cost of doubt is greater than the cost of making a guess (our confidence multiplied by the cost of misclassification) then we should guess, if not we shouldn't. Or mathematically,
+
+$$ r[choice_{i+1} | x] \geq R[choice_i |x] $$
+
+$$ \lambda_r \geq \lambda_s (1-P(w_i |x)) $$
+
+Now what we can do from here is re-arrange this inequality to
+
+$$ P(w_i |x) \geq 1 - \lambda_s / \lambda_r $$
 
 ** Part b
 If there is no loss when choosing doubt, the risk minimization that takes place will mean that the lowest risk choice is always doubt - making our algorithm useless. If the doubt cost is greater than the mis-classification cost then our algorithm will always take a guess at classifying the example and will never go with doubt. This is a way of forcing our algorithm to take a guess and what class something should belong to.
