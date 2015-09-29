@@ -1,0 +1,19 @@
+#+TITLE: Homework 3
+#+AUTHOR: Bill Chambers
+#+DATE: October 6, 2015
+
+
+* Problem 1
+** Part 1
+#+begin_src python :tangle problem1.py
+import numpy as np
+import scipy as sp
+import scipy.io
+
+housing_data = scipy.io.loadmat("data/housing_data.mat")
+
+print(housing_data.keys())
+#+end_src
+
+#+RESULTS:
+: None
