@@ -1,0 +1,605 @@
+#+LATEX_HEADER: \usepackage[margin=0.25in]{geometry}
+#+LaTeX_CLASS_OPTIONS: [a4paper,twoside,twocolumn]
+#+OPTIONS: toc:nil author:nil title:nil date:nil num:nil
+#+TITLE:
+\newpage
+\newpage
+\newpage
+
+* Matrix Identities
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+(A^{-1})^T = (A^T)^{-1}, (AB)^{-1} = B^{-1}A^{-1}
+
+TR(A) = \Sigma eigenvalues,|A| = \Product eigenvalues
+
+\tfrac{\partial TR(A)}{\partial A} = I, \tfrac{\partial TR(XA)}{\partial X} = \tfrac{\partial TR(AX)}{\partial X} = A^T
+
+\tfrac{\partial TR(X^TAX }{\partial X} = (A + A^T)X,
+\tfrac{\partial ln|X| }{\partial X } = X^{-T}
+
+\tfrac{\partial |X^TAX| }{\partial X} = |X^TAX|(AX(X^TAX)^{-1} + A^TX(X^TA^TX)^{-1})
+
+\tfrac{\partial a^T x }{\partial x} = \tfrac{\partial x^T a }{\partial x} = a,
+\tfrac{\partial x^T A x}{\partial x} = (A + A^T)x
+
+\tfrac{\partial a^T X b }{\partial X } = ab^T,
+\tfrac{\partial a^T X^T b }{\partial X} = ba^T,
+\tfrac{\partial a^T X a }{\partial X } = \tfrac{\partial a^T X^T a }{\partial X } = aa^T
+
+\tfrac{\partial a^T X^T C X b }{\partial X } = C^TXab^T + CXba^T
+
+\tfrac{\partial ((Xa + b)^T C (Xa + b))}{\partial X} = (C+C^T)(Xa+b)a^T
+}
+#+END_LaTeX
+
+* Linear Regression
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+Assumes no multicollinearity, homoscedacity, normally distributed data
+
+Risk = R[w] = \Sigma_k l_k(x^k, y^k) = ||Xw^T - y||^2 = wX^TXw^t - 2 w X^Ty + y^Ty
+
+\hat{w} = (X^TX)^{-1}X^T y
+
+Loss = l_k = (x^k w - y^k)^2
+
+Gradient = \nabla_w R = 2(X^TXw^T -X^T y)
+
+f(x) = w \cdot x + b
+
+\noindent\rule{8cm}{0.4pt}
+
+Ridge regression = MAP estimate with a gaussian prior.
+
+Risk = R[w] = \Sigma_k w \phi(x^k) - y^k)^2 + \lambda ||w||_2
+
+w = (X^TX + \lambda I)^{-1}X^T y
+
+Loss = l_k = (x^k w - y^k)^2
+
+Overdetermined = N >> d, Underdetermined = d >> N => invert whatever is smaller b/c pseudo-inverse is equal as \lambda \rightarrow 0
+
+(X^TX + \lambda I)^{-1}X^T y = X^T(XX^T + \lambda I) y
+
+\noindent\rule{8cm}{0.4pt}
+
+Lasso Regression = MAP estimate with a laplace prior.
+
+Risk = R[w] = \Sigma_k w \phi(x_k) - y^k)^2 + \lambda ||w||_1
+
+Loss = l_k = (x^k w - y^k)^2
+
+}
+#+END_LaTeX
+
+* Logistic Regression
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+Good: Soft + flexible + modular decisions, probabilistic output, change decision boundary manually.  We model the decision boundary as f(x). Logistic function S is a mapping from [-\inf, \inf] \rightarrow [0, 1].
+
+In logistic regression, only the marginal examples significantly contribute to determining the position and slope of the sigmoid.
+
+f(x) = w \cdot x + b
+
+S(f(x)) = P_f(Y=1 | X=x)
+
+Link Function: S^{-1} = g, f(x) = g(p)
+
+Logit Link Function: g(p) = log(\tfrac{p}{1-p})
+
+Linear Logistic regression (log odds ratio/logit): \tfrac{ln(P_f(Y=1|X=x)}{P_f(Y=-1|X=x)} = w \cdot x + b
+
+Non-Linear Logistic regression (log odds ratio/logit): \tfrac{ln(P_f(Y=1|X=x)}{P_f(Y=-1|X=x)} = f(x)
+
+Risk(Cross-Entropy) = R(f) = (1/N) \Sigma_k = -log(P_f(Y=y^k | X=x^k))
+
+Logistic Loss == Cross-Entropy Loss
+
+P(Y = 1 | X = x) = \tfrac{1}{1 + e^{-f(x)}}, P(Y = -1 | X = x) = \tfrac{1}{1 + e^{f(x)}}
+
+Functional margin, (y = +/- 1), z = y \dot f(x)
+
+P(Y=y | X=y) = \tfrac{1}{1 + e^{-z}}
+
+- log(P(Y=y | X= x)) = log( 1 + e^{-z})
+}
+#+END_LATEX
+
+* Hebb's Rule
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+Super simple method for classification.
+
+Centroid method = f(x) = (\mu_1 - \mu_0) \cdot x + b = 0
+
+To get descriminant function: f(x) = w\cdot x = 0
+
+Weights: w_i \leftarrow w_i + y^k x^k_i
+
+Weights w/ shrinkage: w_i \leftarrow (1-\gamma)row_i + y^k x^k_i, \gamma \in [0, 1]
+}
+#+END_LaTeX
+
+* Perceptron
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+Given linearly seperable data, the percepttrion algorithm will take no more than R^2/\gamma^2 \text{updates to converge. Where} R = max_i ||x||_i \text{is the radius of the data and } \gamma = min_i \tfrac{y_i(\alpha \cdot x_i)}{||\alpha||}
+
+Risk =
+
+Loss = max(0, -z)
+
+Gradient =
+
+f(x) = \Sigma_k \alpha_i \phi(x_k)
+
+z = y \cdot f(x) = \Sigma_i w_i y \phi_i(x)
+}
+#+END_LaTeX
+
+* SVC & SVM
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+
+Support vectors are the examples closest to the decision boundary. No matter the dimensions, the minimum number of required support vectors is 2.
+Good fit = allow a few training errors, good robustness = maximize the margin for a classifier
+
+Soft margin Compromise
+
+Hard Margin SVM =
+
+Soft Margin SVM =
+
+Margin proofs
+
+Margin = 1/||w||
+
+Large C = focus on a fit to the data, small margin is OK, Small C = focus on large margin, less tendency to overfit.
+
+}
+#+END_LaTeX
+
+* Gradient Descent
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+
+GD: \partial Risk / \partial w
+
+w_{t+1} = w_t - \gamma (1/n) \Sigma_n \nabla_w l(f_w(x^k), y)
+
+\Delta w_{gd} = - \eta \nabla_w R - \gamma w
+
+SGD: \partial Loss / \partial w
+
+w_{t+1} = w_t - \gamma_t \nabla_w l(f_w(x^k), y)
+
+\Delta w_{sgd} = - \eta \nabla_w L - \gamma w
+
+Regression Example
+
+R[w] = \Lambda (Xw - Y)^2 = (Xw - Y)^T \Lambda (Xw - Y)
+
+= w'X' \Lambda XW - 2y' \Lambda Xw - y' \Lambda y
+
+0 = \dfrac{ \partial w'X' \Lambda Xw}{\partial w} - 2 \dfrac{\partial y' \Lambda Xw}{\partial w} - \dfrac{ \partial y' \Lambda y}{\partial w} = \dfrac{ \partial w'X' \Lambda Xw}{\partial w} - 2 \dfrac{\partial y' \Lambda Xw}{\partial w}
+
+0 = \dfrac{ \partial w' \beta w}{\partial w} - 2 \dfrac{\partial \alpha w}{\partial w}, \beta = X' \Lambda X, \alpha = y' \Lambda X
+
+0 = (\beta + \beta^T)w  - 2 \alpha^T = 2X' \Lambda Xw - 2X' \Lambda y
+
+w = (X' \Lambda X)^{-1} X' \Lambda y
+
+R[w] = \Lambda (Xw - y)^2 + \gamma w'w
+
+0 = 2X' \Lambda Xw - 2X' \Lambda y + \dfrac{\partial \gamma w'w}{\partial w} = 2X' \Lambda Xw - 2X' \Lambda y + 2 \gamma w
+
+w = (X' \Lambda X + \gamma I)^{-1} X' \Lambda y
+
+http://research.microsoft.com/pubs/192769/tricks-2012.pdf
+
+With Weight decay: \alpha_h^{(t+1)} = \alpha_h^{(t)} - \eta\gamma\alpha_h^{(t)}\quad(\text{For other examples }h\in\{1,2\dots,m\}/i)
+
+}
+#+END_LaTeX
+
+* Kernels
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+Kernel = similarity measure, a dot product in some feature space
+
+What makes a good kernel? Symmetric, Kernel matrix K is invertible (satisfies Mercer's condition), Kernel matrix is PSD if eigenvalues are positive or if it is an outer product.
+
+\noindent\rule{8cm}{0.4pt}
+
+Gaussian Kernel is a subset of RBF kernel
+
+Gaussian: k(s, t) = e^{-||s - t||^2 / \sigma^2}, \text{Polynomial:} k(s, t) = (s . t)^q
+
+([s_1, s_2] \cdot [t_1, t_2])^2 = [s_1^2, s_2^2, \sqrt{2}s_1,s_2] \cdot [t_1^2, t_2^2, \sqrt{2}t_1t_2]
+
+K(x,y) = \left(\sum_{i=1}^n x_i y_i + c\right)^2 =
+
+\sum_{i=1}^n \left(x_i^2\right) \left(y_i^2 \right) +
+\sum_{i=2}^n \sum_{j=1}^{i-1} \left( \sqrt{2} x_i x_j \right)
+                              \left( \sqrt{2} y_i y_j \right)
++ \sum_{i=1}^n \left( \sqrt{2c} x_i \right) \left( \sqrt{2c} y_i \right) + c^2
+
+\noindent\rule{8cm}{0.4pt}
+
+kernel Machines + Dual Representation (parametric, non-parametric)
+
+f(x) = w \phi(x) = \Sigma_k \alpha_k k(x^k, x)
+
+w = \Sigma_k \alpha_k \phi(x^k) , k(x^k x) = \phi(x^k)\phi(x)
+
+To Classify: f(x) = \Sigma_k \alpha_k k(x^k, x)
+
+\noindent\rule{8cm}{0.4pt}
+
+Parzen windows = assign x to the class label of the majority of the examples enclosed in a sphere of radius \sigma
+
+f(x) = \Sigma_k y_k k(x, x_k)
+
+Parzen window for the linear kernel is just Hebb's rule, k(x, x_k) = x . x_k
+
+\noindent\rule{8cm}{0.4pt}
+
+Kernelized Logistic Regression : \Delta w ~ s(-z_k) y_k \phi(x^k), \Delta \alpha_k ~ S(-z_k)y_k
+
+
+
+}
+#+END_LaTeX
+
+* ML & MAP
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+max_l = \product P(X|\theta) = \Sigma log(P(X|\theta))
+
+Maximum Likelihood for exponential distribution.
+
+ P(x_i | \theta) = \theta e^{-\theta x}
+
+lik(\theta) = \prod^n p(x_i |\theta)
+
+= \sum_{i=1}^n log(p(x_i |\theta))
+
+= \sum_{i=1}^n log(\theta) - \theta x_i
+
+= n log(\theta) - \sum_{i=1}^n \theta x_i
+
+max. lik(\theta) = \partial y / \partial \theta = 0
+
+\tfrac{\partial n log(\theta) - \sum_{i=1}^n \theta x_i}{\partial \theta} = 0
+
+n/\theta - \sum_{i=1}^n x_i = 0
+
+\theta = \tfrac{5}{5.7}
+
+\noindent\rule{8cm}{0.4pt}
+
+}
+#+END_LaTeX
+* Gaussian Classifiers, PCA & LDA
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+
+Gaussian Classifier = P(X=x | Y=y) \propto e^{||X-\mu^y||^2 / 2 \sigma^2}
+
+Isotropic Gaussian model: patterns x are generated from a template (class centroid) plus some gaussian noise with 0 mean and same variance. Shrunken centroid method takes all this a bit father by rescaling and selecting the most informative features.
+
+Isotropic Gaussians (Same var, in all directions): f(x) = (\mu^1 - \mu^0) \cdot x + b, b = (\mu^{0,2} - \mu^{1,2}) / 2 + log(N_1/N_0)
+
+Correct if different scales of features(Sphering): f(x) = (\mu^1 / \sigma - \mu^0 / \sigma) \cdot x + b, b = ((\mu/\sigma^2)^{0,2} -
+(\mu/\sigma^2)^{1,2}) / 2 + log(N_1/N_0)
+
+Most general case(LDA, this is equivalent to whitening): f(x) = \Sigma^{-1} (\mu^1 - \mu^0) \cdot x + b, b = ((\mu^0 \Sigma^{-1} \mu^0 - \mu^1 \Sigma^{-1} \mu^1) / 2 + log(N_1/N_0)
+
+LDA is a generalization of the Gaussian classifer for cases in which the input variables are not statistically independent, but all classes have the same covariance matrix. Once we rotate the input space into the principal axes of the covariance matrix and rescale by the eigen values, LDA is like the centroid method.
+
+P(X=x|Y=y) \propto exp(-1/2 ( x - \mu^y) \Sigma^-1 (x-\mu^y)^T
+
+When we do not hold the covariance of the classes as constant, we get QDA.
+
+Maximize \tfrac{(\mu_1^2 - \mu_0^2}{\sigma^2}
+
+f(x) = \Sigma^{-1}(\mu_1^2 - \mu_0^2) \cdot x + b
+
+Pooled within class Covariance Matrix = \Sigma_{LDA}
+
+After that the process for LDA is to use the centroid method.
+
+When we use shrinkage with LDA and have balanced binary classes of -1 and 1, it can be shown that the decision boundary created is exactly equal to the ridge regression of the data. Except for differing covariance matrices, where ridge regression used whole covariance.
+
+\noindent\rule{8cm}{0.4pt}
+
+Mixture Models: Mixed clusters of data. Some smaller, some larger for a given class.
+
+P(X=x|y) = \Sigma_k P(X=x, S=s_k |Y=y) P(Y=y)
+
+= \Sigma_k P(X=x, S=s_k |Y=y) P(S=s_k|Y=y) P(Y=y)
+
+\Sigma_k P(X=x, S=s_k |Y=y) \propto exp(- ||x-\mu_k||^2/2\sigma^2)
+
+P(S=s_k|Y=y) P(Y=y) \propto \alpha_k
+
+\noindent\rule{8cm}{0.4pt}
+
+PCA = eigenvectors of covariance matrix with large eigenvalues. Works on unlabelled classes.
+
+Total Covariance Matrix = \Sigma_{PCA}
+
+}
+#+END_LaTeX
+
+* Generative and Discriminative
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+
+Generative = model P(Y) P(X|Y) as prior and maximum likelihood/maximum a posteriori. Use those to generate P(Y|X).
+
+Discriminitive = model P(Y|X) directly \rightarrow P(X,Y) = P(Y|X)P(X)
+
+A discriminant function f(x) is a function such that f(x) > 0 for 1 class and f(x) < 0 for the other. f(x) = 0 is the equation of the decision boundary. Given w, f(x) = wx is a linear discriminant function. Corresponding decision boundary w.x=0 is a hyperplane (a subspace of dimension (d-1)). We can transform x into another space to get non-linear decision boundaries.
+}
+#+END_LaTeX
+
+* Risk, Loss & SRM
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+Risk = Sum of the losses
+
+Risk function = convex if Hessian = PSD
+
+\noindent\rule{8cm}{0.4pt}
+
+Three ways to reduce risk and get an idea about your error term. You can either subset different models or you can use shrinkage to reduce the effective dimensions of one kind of model or you could choose more complex kernel subsets.
+
+Empirical Risk: r_{train}[f] = (1/N) \Sigma_k L(f(x^k),y)
+
+Expected Risk/Generalization Error: R[f] = \int L(f(x, w), y) dP(x, y)
+
+The problem is, we don't know that P(x, y) we only get test examples to get empirical risk: R_{test}[f] = (1/N) \Sigma_k L(f(x^k),y)
+
+Guaranteed Risk: Upper bound on the expected risk, measure of training risk + some pre-determined error bar that's a function of the complexity and number of examples. As training error decreases and model complexity increases, we are reaching the guaranteed risk.
+
+R_{gua}[f] = R_{train}[f] + \ep(\delta, C/N) , R[f] \leq r_{gua}[f]
+}
+#+END_LaTeX
+** Loss Functions
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+
+}
+#+END_LaTeX
+
+* Scoring and Evaluation
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+Error rate = E, Accuracy = A: A = 1 -E
+
+Balanced Error Rate (BER), Balanced Accuracy (BAC): BAC = 1 - BER
+
+AUC for ROC: y = Positive Class Success Rate, x = false alarms
+
+Mean Squared Error or the R^2 = 1 - RSS/TSS
+
+\noindent\rule{8cm}{0.4pt}
+
+Error Bars, p + (1-p) = 1, binomially distributed. Expected = np, Variance = np(1-p). Expected value of error rate E = x\n = p
+
+Error bar of error rate with n test examples, \sigma = \sqrt{E(1-E)/n}
+
+Use the bootstrap rather than knowing the distribution of our favorite cost function. Resample with replacement.
+
+\noindent\rule{8cm}{0.4pt}
+
+Bonferroni Correction: New necessary p-value = n-trials * p-value
+
+}
+#+END_LaTeX
+
+* Model Search
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+Lots of hyperparameters to tune, preprocessing, model, model hyperparameters, loss function, regularizer, learning rate and more.
+
+Brute force / Grid Search: Simple, global minima, but scales poorly. Can do fancy versions like simulated annealing and random walks but these are fairly intensive/complicated methods. Greedy search chooses a random direction and walks until a minimum is reached then tries another value.
+
+\noindent\rule{8cm}{0.4pt}
+
+Filter Methods: Leverage knowledge in order to simplify the search base.
+
+\noindent\rule{8cm}{0.4pt}
+
+Wrapper Methods: your learning machine becomes a black box and you only tune hyperparameters.
+
+\noindent\rule{8cm}{0.4pt}
+
+Embedded Methods: push hyperparameters down to the model level. Wrappers are very computationally expensive and overfit so we try and reduce them down by pushing to the model level. We need two levels of inference to enjoy finite capacity of the learning problem. Optimizing the kernel parameters leads to infinite VC dimension (can learn perfectly any training set); optimizing the ridge or regularization parameters leads to zero capacity.
+
+}
+#+END_LaTeX
+
+* General Concepts
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+
+Ockham's Razor = Of two theories providing similarly good predictions, choose the simpler one.
+
+\noindent\rule{8cm}{0.4pt}
+
+Bayes Rule = P(X,Y) = P(X)P(Y|X) = P(Y)P(X|Y)
+Posterior is proportional to the prior and the likelihood.
+
+\noindent\rule{8cm}{0.4pt}
+
+PDF/CDF Information
+
+Expected Value: Get CDF, multiply by values
+
+= \int \tfrac{2}{\pi(1+x^2)}dx
+
+= \tfrac{2}{\pi}\int \tfrac{2}{1+x^2}dx
+
+= \tfrac{2}{\pi}tan^{-1}(x)
+
+tan^{-1}(0) = 0,
+tan^{-1}(1/\sqrt{3}) = \pi/6,
+tan^{-1}(1) = \pi/4,
+tan^{-1}(\sqrt{3}) = \pi/3
+
+\int_a^b f(x)dx = F(b) - F(a)
+
+For the interval from 0 -> 1/\sqrt{3},
+2/\pi * \pi/6 - 0 = 2/6
+
+For the interval from 1/\sqrt{3} -> 1,
+2/\pi * \pi/4 - 2/\pi * \pi/6 = 1/6
+
+For the interval from 1 -> \sqrt{3},
+2/\pi * \pi/3 - 2/\pi * \pi/4 = 1/6
+
+
+Now that we have those values we can go about calculating the expectation which is simply the probabilities of each of those happening (that we calculated above) multiplied by the point values in order to get the expected value.
+
+4/6 + 3/6 + 2/6 = \tfrac{13}{6}
+
+\noindent\rule{8cm}{0.4pt}
+
+VC Dimension: A measure of the capacity (complexity, flexibility) of a model. C = number of training examples that can be seperated, regardless of label assignment. For linear, C = d
+
+\noindent\rule{8cm}{0.4pt}
+
+Leave One Out Cross validation: By repeating this we can get a bound on our error rate. Virtual leave one out is a derivation of a learning method to do this at train time so that we get this error bound for free. Involved in sensitivity analysis, how sensitive is our model?
+
+
+\noindent\rule{8cm}{0.4pt}
+
+Fit vs Robustness
+
+Best fit = no training error, Best robustness = based on typical examples
+
+\noindent\rule{8cm}{0.4pt}
+
+Convexity = Hessian is PSD
+
+\noindent\rule{8cm}{0.4pt}
+
+Eigenvectors/Values = Av = \lambda v, (A -\lambda I)v = 0
+
+\noindent\rule{8cm}{0.4pt}
+
+X is Centered, COV(X) = X^TX = USSU^T
+
+X is not Centered, COV(X) = \Sigma=\mathrm{E}
+\left[
+ \left(
+ \mathbf{X} - \mathrm{E}[\mathbf{X}]
+ \right)
+ \left(
+ \mathbf{X} - \mathrm{E}[\mathbf{X}]
+ \right)^{\rm T}
+\right]
+
+X^TX = US^2U^T, dim(u) = (d, r_rank), dim(s) = (r_rank, r_rank)
+
+XX^T = VS^2V^T, dim(v) = (N, r_rank), dim(S) = (r_rank, r_rank)
+
+U = eigenvectors, s = singular diagonalized singular values, s^2 = eigenvalues
+
+*Application to Ridge Regression* - if we want to vary lambda a lot or try a lot of different lambdas, it's worth it to perform this rotation because it will make it much easier to both invert and add to the diagonals because we've got this diagonalized matrix. Makes it a bit easier to manipulate.
+
+\noindent\rule{8cm}{0.4pt}
+
+SVD(X) = U \Sigma V^T
+
+U & V are unitary rotational matrices, Scaling Matrix = \Sigma
+
+\noindent\rule{8cm}{0.4pt}
+
+if Centered Data, \Sigma = X^TX
+
+Centering: x^k - \mu
+
+Standardizing/ Sphering: (x^k - \mu) / \sigma
+
+Whitening: \sqrt{COV(X)^{-1}}  = \Sigma ^{-1/2}
+
+Whitened Space(and how to send data to it): \phi = X \Sigma ^{-1/2}
+
+}
+#+END_LaTeX
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+}
+#+END_LaTeX
+
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+}
+#+END_LaTeX
+
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+}
+#+END_LaTeX
+
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+}
+#+END_LaTeX
+
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+}
+#+END_LaTeX
