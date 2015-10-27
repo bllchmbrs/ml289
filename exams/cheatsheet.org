@@ -1,4 +1,4 @@
-#+LATEX_HEADER: \usepackage[margin=0.25in]{geometry}
+#+LATEX_HEADER: \usepackage[margin=0.1in]{geometry}
 #+LaTeX_CLASS_OPTIONS: [a4paper,twoside,twocolumn]
 #+OPTIONS: toc:nil author:nil title:nil date:nil num:nil
 #+TITLE:
@@ -81,19 +81,21 @@ Loss = l_k = (x^k w - y^k)^2
 {\scriptsize
 Good: Soft + flexible + modular decisions, probabilistic output, change decision boundary manually.  We model the decision boundary as f(x). Logistic function S is a mapping from [-\inf, \inf] \rightarrow [0, 1].
 
-In logistic regression, only the marginal examples significantly contribute to determining the position and slope of the sigmoid.
+In logistic regression, only the marginal examples significantly contribute to determining the position and slope of the sigmoid. LR can be motivated from a generative model with Gaussian or poisson class conditionals.
 
 f(x) = w \cdot x + b
 
-S(f(x)) = P_f(Y=1 | X=x)
+Logistic Function: S(t) = g^{-1}(t) = \tfrac{1}{1+e^{-z}}
 
-Link Function: S^{-1} = g, f(x) = g(p)
+S(f(x)) = P_f(Y=1 | X=x)
 
 Logit Link Function: g(p) = log(\tfrac{p}{1-p})
 
-Linear Logistic regression (log odds ratio/logit): \tfrac{ln(P_f(Y=1|X=x)}{P_f(Y=-1|X=x)} = w \cdot x + b
+Link Function: S^{-1} = g, f(x) = g(p)
 
-Non-Linear Logistic regression (log odds ratio/logit): \tfrac{ln(P_f(Y=1|X=x)}{P_f(Y=-1|X=x)} = f(x)
+Linear Logistic regression (log odds ratio/logit): log(\tfrac{P_f(Y=1|X=x)}{P_f(Y=-1|X=x)}) = w \cdot x + b
+
+Non-Linear Logistic regression (log odds ratio/logit): log(\tfrac{P_f(Y=1|X=x)}{P_f(Y=-1|X=x)}) = f(x)
 
 Risk(Cross-Entropy) = R(f) = (1/N) \Sigma_k = -log(P_f(Y=y^k | X=x^k))
 
@@ -101,11 +103,16 @@ Logistic Loss == Cross-Entropy Loss
 
 P(Y = 1 | X = x) = \tfrac{1}{1 + e^{-f(x)}}, P(Y = -1 | X = x) = \tfrac{1}{1 + e^{f(x)}}
 
-Functional margin, (y = +/- 1), z = y \dot f(x)
+Functional margin, (y = +/- 1), z = y \cdot f(x)
 
 P(Y=y | X=y) = \tfrac{1}{1 + e^{-z}}
 
 - log(P(Y=y | X= x)) = log( 1 + e^{-z})
+
+-S(-z) = -e^{-z} / (1 + e^{-z})
+
+Kernelized Logistic Regression: \Delta w \approx s(-z_k) y_k \phi(x^k), \Delta \alpha_k ~ S(-z_k)y_k
+
 }
 #+END_LATEX
 
@@ -119,9 +126,11 @@ Centroid method = f(x) = (\mu_1 - \mu_0) \cdot x + b = 0
 
 To get descriminant function: f(x) = w\cdot x = 0
 
-Weights: w_i \leftarrow w_i + y^k x^k_i
+w = \sum_k \phi(x)^k y^k
 
-Weights w/ shrinkage: w_i \leftarrow (1-\gamma)row_i + y^k x^k_i, \gamma \in [0, 1]
+Weights: w_i \leftarrow w_i + y^k x^k_i, \text{Weights w/ decay:} w_i \leftarrow (1-\gamma)row_i + y^k x^k_i, \gamma \in [0, 1]
+
+f(x) = w \cdot x = (np) = \Sigma_k = y^k x^k \cdot x
 }
 #+END_LaTeX
 
@@ -131,37 +140,44 @@ Weights w/ shrinkage: w_i \leftarrow (1-\gamma)row_i + y^k x^k_i, \gamma \in [0,
 {\scriptsize
 Given linearly seperable data, the percepttrion algorithm will take no more than R^2/\gamma^2 \text{updates to converge. Where} R = max_i ||x||_i \text{is the radius of the data and } \gamma = min_i \tfrac{y_i(\alpha \cdot x_i)}{||\alpha||}
 
-Risk =
+Risk = R[w] = \sum_k l(x^k, y_k)
 
 Loss = max(0, -z)
 
-Gradient =
-
-f(x) = \Sigma_k \alpha_i \phi(x_k)
+f(x) = sign(\Sigma_k \alpha_i \phi(x_k))
 
 z = y \cdot f(x) = \Sigma_i w_i y \phi_i(x)
-}
-#+END_LaTeX
 
-* SVC & SVM
-#+BEGIN_LaTeX
-\setlength{\parindent}{0pt}
-{\scriptsize
+Hard Margin: m = 1 / ||w||
+
+Optimum margin: \Delta w_i = \eta y x_i \text{ if incorrect else 0}
+
+Optimum margin: \Delta \alpha^k = \eta y^k x_k \text{ if incorrect else 0}
+
+Geometric(1/||m|| and functional margin link: w \cdot x_1 + b = 1, w \cdot x_2 + b = -1
+
+w (x_1 - x_2) = 2
+
+Dist x_1, x_2 = 2m = ||x_1 - x_2|| = (x_1 - x_2) \cdot w/||w|| = \tfrac{2}{||w||}}
+
+\noindent\rule{8cm}{0.4pt}
 
 Support vectors are the examples closest to the decision boundary. No matter the dimensions, the minimum number of required support vectors is 2.
-Good fit = allow a few training errors, good robustness = maximize the margin for a classifier
+Good fit = allow a few training errors, good robustness = maximize the margin for a classifier. Slackness = every training point misclassified by a soft-margin SVM is support vector. We need only the dot product of x_i, x_j \forall i,j.\text{ and no more info.}
+
+Strong duality holds for HM and SM SVM.
 
 Soft margin Compromise
 
-Hard Margin SVM =
+Soft Margin = min \tfrac{1}{|m|} + C * R_{train}
 
-Soft Margin SVM =
+Hard Margin = min C * R_{train}
 
-Margin proofs
+Soft Margin SVM = as C \rightarrow 0, \text{ width of margin } \tfrac{2}{||w||} \rightarrow \inf
 
 Margin = 1/||w||
 
-Large C = focus on a fit to the data, small margin is OK, Small C = focus on large margin, less tendency to overfit.
+Large C = focus on a fit to the data, small margin is OK[hard margin]. Small C = focus on large margin, less tendency to overfit.
 
 }
 #+END_LaTeX
@@ -206,6 +222,21 @@ w = (X' \Lambda X + \gamma I)^{-1} X' \Lambda y
 http://research.microsoft.com/pubs/192769/tricks-2012.pdf
 
 With Weight decay: \alpha_h^{(t+1)} = \alpha_h^{(t)} - \eta\gamma\alpha_h^{(t)}\quad(\text{For other examples }h\in\{1,2\dots,m\}/i)
+
+\noindent\rule{8cm}{0.4pt}
+
+Loss Functions:
+
+Losses as an expression of a function of the functional margin (z), z = y f(x)
+\begin{tabular}{ l l }
+  Zero-One  & L(z) = 1(Sign(f(x)) \neq y) = 1(z) \leq 0) \\
+  Square  & L(z) = (f(x) - y)^2 = (1 - z)^2, y = +/- 1 \\
+  Hinge  & max(0, 1-z) (svc loss) \\
+  Logistic  & log(1 + e^{-z}) \\
+Perceptron  & max(0, -z) \\
+Adaboost loss  & e^{-z} \\
+\end{tabular}
+
 
 }
 #+END_LaTeX
@@ -253,7 +284,6 @@ Parzen window for the linear kernel is just Hebb's rule, k(x, x_k) = x . x_k
 
 \noindent\rule{8cm}{0.4pt}
 
-Kernelized Logistic Regression : \Delta w ~ s(-z_k) y_k \phi(x^k), \Delta \alpha_k ~ S(-z_k)y_k
 
 
 
@@ -264,29 +294,49 @@ Kernelized Logistic Regression : \Delta w ~ s(-z_k) y_k \phi(x^k), \Delta \alpha
 #+BEGIN_LaTeX
 \setlength{\parindent}{0pt}
 {\scriptsize
-max_l = \product P(X|\theta) = \Sigma log(P(X|\theta))
+max likelihood, a point estimate, not a dist. Maximize probability given the model,  = \product P(X|\theta) = \Sigma log(P(X|\theta))
+
+if f(x;\theta) = PMF, \text{ then } l(f) < 1
 
 Maximum Likelihood for exponential distribution.
 
- P(x_i | \theta) = \theta e^{-\theta x}
+P(x_i | \theta) = \theta e^{-\theta x}
 
-lik(\theta) = \prod^n p(x_i |\theta)
-
-= \sum_{i=1}^n log(p(x_i |\theta))
-
-= \sum_{i=1}^n log(\theta) - \theta x_i
-
-= n log(\theta) - \sum_{i=1}^n \theta x_i
+lik(\theta) = \prod^n p(x_i |\theta) = \sum_{i=1}^n log(p(x_i |\theta)) = \sum_{i=1}^n log(\theta) - \theta x_i = n log(\theta) - \sum_{i=1}^n \theta x_i
 
 max. lik(\theta) = \partial y / \partial \theta = 0
 
 \tfrac{\partial n log(\theta) - \sum_{i=1}^n \theta x_i}{\partial \theta} = 0
 
-n/\theta - \sum_{i=1}^n x_i = 0
-
-\theta = \tfrac{5}{5.7}
+n/\theta - \sum_{i=1}^n x_i = 0, \theta = \tfrac{\sum_n x_i}{n}
 
 \noindent\rule{8cm}{0.4pt}
+
+Maximum a posteriori: Maximize the model given the data. Use bayes rule to invert the ML formula. The MAP estimate allows us to inject into the estimation calculation our prior beliefs regarding the parameters values in \Theta.
+
+= argmax(P(model|data)) = argmax(P(data|model)P(model)) / P(data) (P(data) is constant, so we remove it)
+
+= argmax(P(model|data)) = argmax(P(data|model)P(model)) = argmin -log(p(d|m)) - log(p(m)) = - log likelihood - log prior
+
+\noindent\rule{8cm}{0.4pt}
+
+Prob. of Linear Regression: P(y|x,\sigma^2) \approx N(w^Tx,\sigma^2) \text{ with prior } p(w).
+
+Assume Laplace, show equivalent to minimizing R(w) = \Sigma_n(y_k - w^T x^k)^2 + \lambda ||w||_1
+
+w_j \approx Laplace(0,t), P(w_j) = \tfrac{1}{2t} e ^{-|w_j|/t}, P(w) = \product P(w_j) = (\tfrac{1}{2t})^D \cdot e^{- (\Sigma|w_j|)/t}
+
+P(w|X_i,Y_i) \propto (\prod N(Y_i | w^T X_i, \sigma^2)) \cdot P(w)
+
+l(w) = \Sigma log(N("")) + \Sigma log P(w_j)
+
+= - \Sigma \tfrac{Y_i - w^TX_i)^2}{2\sigma^2} + \tfrac{-\Sigma |w_j|}{t} + nlog \tfrac{1}{\sqrt{2\pi\sigma^2}} + Dlog(1/(2t))
+
+First two terms are our only w terms, last two are constants.
+
+= \Sigma(y_i - w^T x_i)^2 + 2 \sigma^2 / t \Sigma |w_j|
+
+The last term becomes the lambda in front, proving that it's equal to the above Risk function.
 
 }
 #+END_LaTeX
@@ -295,7 +345,7 @@ n/\theta - \sum_{i=1}^n x_i = 0
 \setlength{\parindent}{0pt}
 {\scriptsize
 
-Gaussian Classifier = P(X=x | Y=y) \propto e^{||X-\mu^y||^2 / 2 \sigma^2}
+Gaussian Classifier = P(X=x | Y=y) \propto e^{||X-\mu^{class,y}||^2 / 2 \sigma^2}
 
 Isotropic Gaussian model: patterns x are generated from a template (class centroid) plus some gaussian noise with 0 mean and same variance. Shrunken centroid method takes all this a bit father by rescaling and selecting the most informative features.
 
@@ -325,6 +375,8 @@ When we use shrinkage with LDA and have balanced binary classes of -1 and 1, it 
 \noindent\rule{8cm}{0.4pt}
 
 Mixture Models: Mixed clusters of data. Some smaller, some larger for a given class.
+
+f(x) = \sum_k \alpha_k k(\mu^k, x;\sigma)
 
 P(X=x|y) = \Sigma_k P(X=x, S=s_k |Y=y) P(Y=y)
 
@@ -360,30 +412,22 @@ A discriminant function f(x) is a function such that f(x) > 0 for 1 class and f(
 #+BEGIN_LaTeX
 \setlength{\parindent}{0pt}
 {\scriptsize
-Risk = Sum of the losses
-
-Risk function = convex if Hessian = PSD
+Risk = Sum of the losses, Risk function = convex if Hessian = PSD
 
 \noindent\rule{8cm}{0.4pt}
 
 Three ways to reduce risk and get an idea about your error term. You can either subset different models or you can use shrinkage to reduce the effective dimensions of one kind of model or you could choose more complex kernel subsets.
+The empirical risk is the average loss over a finite number of given examples, Empirical Risk: r_{train}[f] = (1/N) \Sigma_k L(f(x^k),y)
 
-Empirical Risk: r_{train}[f] = (1/N) \Sigma_k L(f(x^k),y)
-
-Expected Risk/Generalization Error: R[f] = \int L(f(x, w), y) dP(x, y)
+Expected Risk: The expected value of the loss, i.e. the average over an infinite number of examples, Expected Risk/Generalization Error: R[f] = \int L(f(x, w), y) dP(x, y)
 
 The problem is, we don't know that P(x, y) we only get test examples to get empirical risk: R_{test}[f] = (1/N) \Sigma_k L(f(x^k),y)
 
 Guaranteed Risk: Upper bound on the expected risk, measure of training risk + some pre-determined error bar that's a function of the complexity and number of examples. As training error decreases and model complexity increases, we are reaching the guaranteed risk.
 
 R_{gua}[f] = R_{train}[f] + \ep(\delta, C/N) , R[f] \leq r_{gua}[f]
-}
-#+END_LaTeX
-** Loss Functions
-#+BEGIN_LaTeX
-\setlength{\parindent}{0pt}
-{\scriptsize
 
+MAP is a method of SRM where -loglike = emp. risk, regularizer = negative log prior
 }
 #+END_LaTeX
 
@@ -393,6 +437,8 @@ R_{gua}[f] = R_{train}[f] + \ep(\delta, C/N) , R[f] \leq r_{gua}[f]
 {\scriptsize
 Error rate = E, Accuracy = A: A = 1 -E
 
+BAC = 1/2 * (\tfrac{tp}{tp+fn}  + \tfrac{tn}{tn+fp})
+
 Balanced Error Rate (BER), Balanced Accuracy (BAC): BAC = 1 - BER
 
 AUC for ROC: y = Positive Class Success Rate, x = false alarms
@@ -400,6 +446,8 @@ AUC for ROC: y = Positive Class Success Rate, x = false alarms
 Mean Squared Error or the R^2 = 1 - RSS/TSS
 
 \noindent\rule{8cm}{0.4pt}
+
+Error Rate is binomial:  f(k;n,p) = \Pr(X = k) = \binom n k  p^k(1-p)^{n-k}
 
 Error Bars, p + (1-p) = 1, binomially distributed. Expected = np, Variance = np(1-p). Expected value of error rate E = x\n = p
 
@@ -428,7 +476,7 @@ Filter Methods: Leverage knowledge in order to simplify the search base.
 
 \noindent\rule{8cm}{0.4pt}
 
-Wrapper Methods: your learning machine becomes a black box and you only tune hyperparameters.
+Wrapper Methods: your machine = black box and you only tune hyperparameters.
 
 \noindent\rule{8cm}{0.4pt}
 
@@ -442,12 +490,23 @@ Embedded Methods: push hyperparameters down to the model level. Wrappers are ver
 \setlength{\parindent}{0pt}
 {\scriptsize
 
-Ockham's Razor = Of two theories providing similarly good predictions, choose the simpler one.
+Cross-validation is used to select hyperparameters and prevent overfitting.
+
+Cross-entropy = - log likelihood. A way of comparing distributions. KL Divergence is a way of comparing probability distributions.
+
+Normal equations can be derived from minimizing empirical risk, assuming that P(y|X=x) is normally distributed with mean w^Tx \text{ and variance } \sigma^2, \text{assuming that }y = w^Tx + \epsilon, \text{ where } \epsilon \approx N(0,\sigma^2)
+
+isocontours of Gaussian distribution have axes whose lengths are proportional to the square root of eigenvalues of the covariance matrix.
+
+Learning Rate != hyperparameter.
 
 \noindent\rule{8cm}{0.4pt}
 
-Bayes Rule = P(X,Y) = P(X)P(Y|X) = P(Y)P(X|Y)
-Posterior is proportional to the prior and the likelihood.
+Bayes Rule = P(X,Y) = P(X)P(Y|X) = P(Y)P(X|Y), Posterior is proportional to the prior and the likelihood.
+
+Bayes Optimal Discriminant Classifier/Optimal Decision Boudary for unknown P(X,Y) = f*(x) = P(Y=1|X=x) = P(Y=-1|X=x)
+
+Bayesian Learning
 
 \noindent\rule{8cm}{0.4pt}
 
@@ -456,9 +515,7 @@ PDF/CDF Information
 Expected Value: Get CDF, multiply by values
 
 = \int \tfrac{2}{\pi(1+x^2)}dx
-
 = \tfrac{2}{\pi}\int \tfrac{2}{1+x^2}dx
-
 = \tfrac{2}{\pi}tan^{-1}(x)
 
 tan^{-1}(0) = 0,
@@ -499,7 +556,9 @@ Best fit = no training error, Best robustness = based on typical examples
 
 \noindent\rule{8cm}{0.4pt}
 
-Convexity = Hessian is PSD
+PSD = x^TAx \geq 0, \text{Symmetric PSD matrix != all non-negative elements}
+
+PSD diagonals = non-negative ? CLEAN ME
 
 \noindent\rule{8cm}{0.4pt}
 
@@ -531,13 +590,15 @@ U = eigenvectors, s = singular diagonalized singular values, s^2 = eigenvalues
 
 SVD(X) = U \Sigma V^T
 
-U & V are unitary rotational matrices, Scaling Matrix = \Sigma
+U and V are unitary rotational matrices, Scaling Matrix = \Sigma
 
 \noindent\rule{8cm}{0.4pt}
 
 if Centered Data, \Sigma = X^TX
 
 Centering: x^k - \mu
+
+To rotate: XU, U from \Sigma^1=UDU^T
 
 Standardizing/ Sphering: (x^k - \mu) / \sigma
 
