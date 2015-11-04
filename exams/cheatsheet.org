@@ -10,27 +10,24 @@
 #+BEGIN_LaTeX
 \setlength{\parindent}{0pt}
 {\scriptsize
-(A^{-1})^T = (A^T)^{-1}, (AB)^{-1} = B^{-1}A^{-1}
+\begin{tabular}{ c c }
+(A^{-1})^T = (A^T)^{-1}$ & (AB)^{-1} = B^{-1}A^{-1} \\
+TR(A) = \Sigma eigenvalues$ & |A| = \Product eigenvalues \\
+$\tfrac{\partial TR(A)}{\partial A} = I$ & $\tfrac{\partial TR(XA)}{\partial X} = \tfrac{\partial TR(AX)}{\partial X} = A^T$ \\
+$\tfrac{\partial TR(X^TAX }{\partial X} = (A + A^T)X$ &
+$\tfrac{\partial ln|X| }{\partial X } = X^{-T}$ \\
+$\tfrac{\partial a^T x }{\partial x} = \tfrac{\partial x^T a }{\partial x} = a$ &
+$\tfrac{\partial x^T A x}{\partial x} = (A + A^T)x$ \\
+$\tfrac{\partial a^T X b }{\partial X } = ab^T$ & $\tfrac{\partial a^T X^T b }{\partial X} = ba^T$ \\
 
-TR(A) = \Sigma eigenvalues,|A| = \Product eigenvalues
+$\tfrac{\partial a^T X a }{\partial X } = \tfrac{\partial a^T X^T a }{\partial X } = aa^T$ & $\tfrac{\partial a^T X^T C X b }{\partial X } = C^TXab^T + CXba^T$ \\
 
-\tfrac{\partial TR(A)}{\partial A} = I, \tfrac{\partial TR(XA)}{\partial X} = \tfrac{\partial TR(AX)}{\partial X} = A^T
-
-\tfrac{\partial TR(X^TAX }{\partial X} = (A + A^T)X,
-\tfrac{\partial ln|X| }{\partial X } = X^{-T}
+\end{tabular}
 
 \tfrac{\partial |X^TAX| }{\partial X} = |X^TAX|(AX(X^TAX)^{-1} + A^TX(X^TA^TX)^{-1})
 
-\tfrac{\partial a^T x }{\partial x} = \tfrac{\partial x^T a }{\partial x} = a,
-\tfrac{\partial x^T A x}{\partial x} = (A + A^T)x
-
-\tfrac{\partial a^T X b }{\partial X } = ab^T,
-\tfrac{\partial a^T X^T b }{\partial X} = ba^T,
-\tfrac{\partial a^T X a }{\partial X } = \tfrac{\partial a^T X^T a }{\partial X } = aa^T
-
-\tfrac{\partial a^T X^T C X b }{\partial X } = C^TXab^T + CXba^T
-
 \tfrac{\partial ((Xa + b)^T C (Xa + b))}{\partial X} = (C+C^T)(Xa+b)a^T
+
 }
 #+END_LaTeX
 
@@ -140,11 +137,7 @@ f(x) = w \cdot x = (np) = \Sigma_k = y^k x^k \cdot x
 {\scriptsize
 Given linearly seperable data, the percepttrion algorithm will take no more than R^2/\gamma^2 \text{updates to converge. Where} R = max_i ||x||_i \text{is the radius of the data and } \gamma = min_i \tfrac{y_i(\alpha \cdot x_i)}{||\alpha||}
 
-Risk = R[w] = \sum_k l(x^k, y_k)
-
-Loss = max(0, -z)
-
-f(x) = sign(\Sigma_k \alpha_i \phi(x_k))
+Risk = R[w] = \sum_k l(x^k, y_k), \text{ Loss } = max(0, -z), f(x) = sign(\Sigma_k \alpha_i \phi(x_k))
 
 z = y \cdot f(x) = \Sigma_i w_i y \phi_i(x)
 
@@ -162,20 +155,13 @@ Dist x_1, x_2 = 2m = ||x_1 - x_2|| = (x_1 - x_2) \cdot w/||w|| = \tfrac{2}{||w||
 
 \noindent\rule{8cm}{0.4pt}
 
-Support vectors are the examples closest to the decision boundary. No matter the dimensions, the minimum number of required support vectors is 2.
-Good fit = allow a few training errors, good robustness = maximize the margin for a classifier. Slackness = every training point misclassified by a soft-margin SVM is support vector. We need only the dot product of x_i, x_j \forall i,j.\text{ and no more info.}
+Support vectors are the examples closest to the decision boundary. No matter the dimensions, the minimum number of required support vectors is 2. Good fit = allow a few training errors, good robustness = maximize the margin for a classifier. Slackness = every training point misclassified by a soft-margin SVM is support vector. We need only the dot product of x_i, x_j \forall i,j.\text{ and no more info.}
 
 Strong duality holds for HM and SM SVM.
 
-Soft margin Compromise
-
-Soft Margin = min \tfrac{1}{|m|} + C * R_{train}
-
-Hard Margin = min C * R_{train}
+Soft Margin = min \tfrac{1}{|m|} + C * R_{train}, \text{Hard Margin } = min C * R_{train},
 
 Soft Margin SVM = as C \rightarrow 0, \text{ width of margin } \tfrac{2}{||w||} \rightarrow \inf
-
-Margin = 1/||w||
 
 Large C = focus on a fit to the data, small margin is OK[hard margin]. Small C = focus on large margin, less tendency to overfit.
 
@@ -187,17 +173,13 @@ Large C = focus on a fit to the data, small margin is OK[hard margin]. Small C =
 \setlength{\parindent}{0pt}
 {\scriptsize
 
-GD: \partial Risk / \partial w
+\begin{tabular}{ l l }
+GD: \partial Risk / \partial w & SGD: \partial Loss / \partial w \\
+w_{t+1} = w_t - \gamma (1/n) \Sigma_n \nabla_w l(f_w(x^k), y) & w_{t+1} = w_t - \gamma_t \nabla_w l(f_w(x^k), y) \\
+\Delta w_{gd} = - \eta \nabla_w R - \gamma w & \Delta w_{sgd} = - \eta \nabla_w L - \gamma w \\
+\end{tabular}
 
-w_{t+1} = w_t - \gamma (1/n) \Sigma_n \nabla_w l(f_w(x^k), y)
-
-\Delta w_{gd} = - \eta \nabla_w R - \gamma w
-
-SGD: \partial Loss / \partial w
-
-w_{t+1} = w_t - \gamma_t \nabla_w l(f_w(x^k), y)
-
-\Delta w_{sgd} = - \eta \nabla_w L - \gamma w
+\noindent\rule{8cm}{0.4pt}
 
 Regression Example
 
@@ -219,8 +201,6 @@ R[w] = \Lambda (Xw - y)^2 + \gamma w'w
 
 w = (X' \Lambda X + \gamma I)^{-1} X' \Lambda y
 
-http://research.microsoft.com/pubs/192769/tricks-2012.pdf
-
 With Weight decay: \alpha_h^{(t+1)} = \alpha_h^{(t)} - \eta\gamma\alpha_h^{(t)}\quad(\text{For other examples }h\in\{1,2\dots,m\}/i)
 
 \noindent\rule{8cm}{0.4pt}
@@ -234,7 +214,6 @@ Losses as an expression of a function of the functional margin (z), z = y f(x)
   Hinge  & max(0, 1-z) (svc loss) \\
   Logistic  & log(1 + e^{-z}) \\
 Perceptron  & max(0, -z) \\
-Adaboost loss  & e^{-z} \\
 \end{tabular}
 
 
@@ -247,9 +226,7 @@ Adaboost loss  & e^{-z} \\
 {\scriptsize
 Kernel = similarity measure, a dot product in some feature space
 
-What makes a good kernel? Symmetric, Kernel matrix K is invertible (satisfies Mercer's condition), Kernel matrix is PSD if eigenvalues are positive or if it is an outer product.
-
-\noindent\rule{8cm}{0.4pt}
+What makes a good kernel? Symmetric, Kernel matrix K is invertible (satisfies Mercer's condition), Kernel matrix is PSD if eigenvalues are positive or if it is an outer product. Classifier: f(x) \Sum_k \alpha^k k(x^k, x) + b
 
 Gaussian Kernel is a subset of RBF kernel
 
@@ -268,11 +245,7 @@ K(x,y) = \left(\sum_{i=1}^n x_i y_i + c\right)^2 =
 
 kernel Machines + Dual Representation (parametric, non-parametric)
 
-f(x) = w \phi(x) = \Sigma_k \alpha_k k(x^k, x)
-
-w = \Sigma_k \alpha_k \phi(x^k) , k(x^k x) = \phi(x^k)\phi(x)
-
-To Classify: f(x) = \Sigma_k \alpha_k k(x^k, x)
+f(x) = w \phi(x) = \Sigma_k \alpha_k k(x^k, x), w = \Sigma_k \alpha_k \phi(x^k) , k(x^k x) = \phi(x^k)\phi(x)
 
 \noindent\rule{8cm}{0.4pt}
 
@@ -297,6 +270,8 @@ Parzen window for the linear kernel is just Hebb's rule, k(x, x_k) = x . x_k
 max likelihood, a point estimate, not a dist. Maximize probability given the model,  = \product P(X|\theta) = \Sigma log(P(X|\theta))
 
 if f(x;\theta) = PMF, \text{ then } l(f) < 1
+
+\noindent\rule{8cm}{0.4pt}
 
 Maximum Likelihood for exponential distribution.
 
@@ -362,9 +337,7 @@ P(X=x|Y=y) \propto exp(-1/2 ( x - \mu^y) \Sigma^-1 (x-\mu^y)^T
 
 When we do not hold the covariance of the classes as constant, we get QDA.
 
-Maximize \tfrac{(\mu_1^2 - \mu_0^2}{\sigma^2}
-
-f(x) = \Sigma^{-1}(\mu_1^2 - \mu_0^2) \cdot x + b
+Maximize \tfrac{\mu_1^2 - \mu_0^2}{\sigma^2}, \text{ new } f(x) = \Sigma^{-1}(\mu_1^2 - \mu_0^2) \cdot x + b
 
 Pooled within class Covariance Matrix = \Sigma_{LDA}
 
@@ -388,7 +361,7 @@ P(S=s_k|Y=y) P(Y=y) \propto \alpha_k
 
 \noindent\rule{8cm}{0.4pt}
 
-PCA = eigenvectors of covariance matrix with large eigenvalues. Works on unlabelled classes.
+PCA = eigenvectors of covariance matrix with large eigenvalues.PCA is a method of feature construction. The new features are linear combinations (weighted sums) of the old ones. They are obtained by rotating the input space into the axes of the principal components of XTX: X->XU, where the columns of U are eigenvectors.  This transform has the following properties: (1) the eigen directions corresponding to the largest eigenvalues explain best the variance in the data; (2) If we limit ourselves to the n' eigen directions corresponding to the top eigenvalues and rotate back into the original axes: XU -> XUUT, the reconstructed data XUUT are closest to the original data X in the least square sense. So we cut down on the number of features with as small as possible information loss.
 
 Total Covariance Matrix = \Sigma_{PCA}
 
@@ -414,14 +387,15 @@ A discriminant function f(x) is a function such that f(x) > 0 for 1 class and f(
 {\scriptsize
 Risk = Sum of the losses, Risk function = convex if Hessian = PSD
 
-\noindent\rule{8cm}{0.4pt}
-
 Three ways to reduce risk and get an idea about your error term. You can either subset different models or you can use shrinkage to reduce the effective dimensions of one kind of model or you could choose more complex kernel subsets.
-The empirical risk is the average loss over a finite number of given examples, Empirical Risk: r_{train}[f] = (1/N) \Sigma_k L(f(x^k),y)
 
-Expected Risk: The expected value of the loss, i.e. the average over an infinite number of examples, Expected Risk/Generalization Error: R[f] = \int L(f(x, w), y) dP(x, y)
+Empirical Risk is the average loss over a finite number of given examples, Empirical Risk: r_{train}[f] = (1/N) \Sigma_k L(f(x^k),y)
 
-The problem is, we don't know that P(x, y) we only get test examples to get empirical risk: R_{test}[f] = (1/N) \Sigma_k L(f(x^k),y)
+Expected Risk: The expected value of the loss, i.e. the average over an infinite number of examples.
+
+Expected Risk/Generalization Error: R[f] = \int L(f(x, w), y) dP(x, y)
+
+The problem is, we don't know that P(x, y) we only get test examples to get Empirical Risk: R_{test}[f] = (1/N) \Sigma_k L(f(x^k),y)
 
 Guaranteed Risk: Upper bound on the expected risk, measure of training risk + some pre-determined error bar that's a function of the complexity and number of examples. As training error decreases and model complexity increases, we are reaching the guaranteed risk.
 
@@ -476,7 +450,7 @@ Filter Methods: Leverage knowledge in order to simplify the search base.
 
 \noindent\rule{8cm}{0.4pt}
 
-Wrapper Methods: your machine = black box and you only tune hyperparameters.
+Wrapper Methods: your machine = black box and you only tune hyperparameters. ie CV.
 
 \noindent\rule{8cm}{0.4pt}
 
@@ -506,7 +480,9 @@ Bayes Rule = P(X,Y) = P(X)P(Y|X) = P(Y)P(X|Y), Posterior is proportional to the 
 
 Bayes Optimal Discriminant Classifier/Optimal Decision Boudary for unknown P(X,Y) = f*(x) = P(Y=1|X=x) = P(Y=-1|X=x)
 
-Bayesian Learning
+Naive Bayes Classifier: argmax_y \prod P(X=x_i | Y=y_i)P(Y=y)
+
+Bayesian learning: one seeks to estimate for a new example x the probability P(y|x,D) by integrating over all possible choices of f, using P(f|D): P(y|x,D) = \int P(y|x,f) dP(f|D).
 
 \noindent\rule{8cm}{0.4pt}
 
@@ -588,24 +564,33 @@ U = eigenvectors, s = singular diagonalized singular values, s^2 = eigenvalues
 
 \noindent\rule{8cm}{0.4pt}
 
-SVD(X) = U \Sigma V^T
-
-U and V are unitary rotational matrices, Scaling Matrix = \Sigma
+Independence = P(X,Y) = P(X)P(Y), C(x,y) = ( x-\mu_x ).( y-\mu_y )/ (sx sy)
 
 \noindent\rule{8cm}{0.4pt}
 
-if Centered Data, \Sigma = X^TX
+U and V are unitary rotational matrices, Scaling Matrix = \Sigma, SVD(X) = U \Sigma V^T
 
-Centering: x^k - \mu
+\noindent\rule{8cm}{0.4pt}
+
+if Centered Data, \Sigma = X^TX, \text{ Centering: } x^k - \mu
 
 To rotate: XU, U from \Sigma^1=UDU^T
 
-Standardizing/ Sphering: (x^k - \mu) / \sigma
-
-Whitening: \sqrt{COV(X)^{-1}}  = \Sigma ^{-1/2}
+Standardizing/ Sphering: (x^k - \mu) / \sigma, \text{ Whitening: }\sqrt{COV(X)^{-1}}  = \Sigma ^{-1/2}
 
 Whitened Space(and how to send data to it): \phi = X \Sigma ^{-1/2}
 
+\noindent\rule{8cm}{0.4pt}
+
+Log Rules: log(x^y) = y \cdot log(x)
+
+If X1 and X2 are normal + ind. (X1,X2) must have mv normal dist. => true. If (X1,X2) = mv normal dist, not independent.
+
+guassian: P(x_i|\mu_i,\sigma_i) = \tfrac{1}{(\sigma_i \sqrt{2\pi}\sigma)} e^{- \tfrac{(x-\mu)^2}{2\sigma^2}
+
+Log likelihood of guassian: l(X_1,...X_N; \mu, \sigma) = N ln(\tfrac{1}{\sqrt{2\pi}\sigma}) - \tfrac{1}{2\sigma^2}\sum (X_i - \mu)^2
+
+\mu = 1/N\sum X_i, \sigma = \sqrt{(1/N) \sum(X_i - \mu)^2}
 }
 #+END_LaTeX
 
@@ -634,30 +619,6 @@ Whitened Space(and how to send data to it): \phi = X \Sigma ^{-1/2}
 
 
 
-
-#+BEGIN_LaTeX
-\setlength{\parindent}{0pt}
-{\scriptsize
-}
-#+END_LaTeX
-
-#+BEGIN_LaTeX
-\setlength{\parindent}{0pt}
-{\scriptsize
-}
-#+END_LaTeX
-
-#+BEGIN_LaTeX
-\setlength{\parindent}{0pt}
-{\scriptsize
-}
-#+END_LaTeX
-
-#+BEGIN_LaTeX
-\setlength{\parindent}{0pt}
-{\scriptsize
-}
-#+END_LaTeX
 
 #+BEGIN_LaTeX
 \setlength{\parindent}{0pt}

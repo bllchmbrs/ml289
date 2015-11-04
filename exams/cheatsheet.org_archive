@@ -1,0 +1,35 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file /Users/bill_chambers/dev/ml289/exams/cheatsheet.org
+
+
+* Gaussian Classifiers, PCA & LDA
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2015-10-25 Sun 19:25
+  :ARCHIVE_FILE: ~/dev/ml289/exams/cheatsheet.org
+  :ARCHIVE_CATEGORY: cheatsheet
+  :END:
+#+BEGIN_LaTeX
+\setlength{\parindent}{0pt}
+{\scriptsize
+
+Gaussian Classifier = P(X=x | Y=y) \propto e^{||X-\mu^y||^2 / 2 \sigma^2}
+
+Isotropic Gaussian model: patterns x are generated from a template (class centroid) plus some gaussian noise with 0 mean and same variance. Shrunken centroid method takes all this a bit father by rescaling and selecting the most informative features.
+
+PCA = eigenvectors of covariance matrix with large eigenvalues. Works on unlabelled classes.
+
+Total Covariance Matrix = \Sigma_{PCA}
+
+Pooled within class Covariance Matrix = \Sigma_{LDA}
+
+After that the process for LDA is to use the centroid method.
+
+LDA is a generalization of the Gaussian classifer for cases in which the input variables are not statistically independent, but all classes have the same covariance matrix. Once we rotate the input space into the principal axes of the covariance matrix and rescale by the eigen values, LDA is like the centroid method.
+
+Maximize the Max \tfrac{(\mu_1 - \mu_2)^2}{\sigma_1^2 + \sigma_2^2}
+
+CLEAN ME!!!
+}
+#+END_LaTeX
