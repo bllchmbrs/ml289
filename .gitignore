@@ -2,4 +2,5 @@ bin
 man
 lib
 */data
+**/__pycache__/*
 *.ipynb_checkpoints

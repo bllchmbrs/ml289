@@ -60,6 +60,7 @@ class DecisionTree:
     def train(self, train_data, train_labels):  # could add random seed
         if not self.pretrain_check(train_data, train_labels):
             return  # don't pass the check, don't train
+        print(quick_stats(train_data))
 
         shuff = choice(len(train_labels), len(train_labels))
         train_data = train_data[shuff]
@@ -69,15 +70,16 @@ class DecisionTree:
         self.node = Node(feature, split)
         ldata, rdata, llabels, rlabels = self.node.apply(train_data,
                                                          train_labels)
-        print(quick_stats(ldata))
-        print(quick_stats(rdata))
+
         self.node.left = DecisionTree(
             {"max_depth": self.max_depth - 1,
              "min_points": self.min_points})
         self.node.right = DecisionTree(
             {"max_depth": self.max_depth - 1,
              "min_points": self.min_points})
+        print("training left node - depth: %i" % (4 - self.max_depth))
         self.node.left.train(ldata, llabels)
+        print("training right node - depth: %i" % (4 - self.max_depth))
         self.node.right.train(rdata, rlabels)
 
     def predict(self, test_data):
@@ -103,7 +105,7 @@ class Node:
         left = np.where(data[:, self.feature] <= self.split_rule)
         right = np.where(data[:, self.feature] > self.split_rule)
 
-        if labels.any():
+        if type(labels) != type(None):
             return data[left], data[right], labels[left], labels[right]
 
         return data[left], data[right]
