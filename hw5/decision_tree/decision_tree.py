@@ -42,7 +42,7 @@ class DecisionTree:
 
     def segmentor(self, data, labels):
         impurities = []
-        for feature in choice(len(data[0,:]), 5):
+        for feature in choice(len(data[0,:]), len(data[0,:])):
             # print("Using feature number: %i" % feature)
             for unique_val in np.unique(data[:, feature]):
                 pc1 = labels[np.where(data[:, feature] <= unique_val)]
@@ -77,9 +77,9 @@ class DecisionTree:
         self.node.right = DecisionTree(
             {"max_depth": self.max_depth - 1,
              "min_points": self.min_points})
-        #       print("training left node - depth: %i" % (4 - self.max_depth))
+        # print("training left node - depth: %i" % (4 - self.max_depth))
         self.node.left.train(ldata, llabels)
-        #        print("training right node - depth: %i" % (4 - self.max_depth))
+        # print("training right node - depth: %i" % (4 - self.max_depth))
         self.node.right.train(rdata, rlabels)
 
     def predict(self, test_data):
