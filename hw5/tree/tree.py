@@ -20,10 +20,19 @@ class RandomForest:
     def __str__(self):
         return "Random Forest. %i Trees" % (self.ntrees)
 
+    def get_splits(self):
+        final = []
+        for tree in self.trees:
+            ls = []
+            tree.get_split_data(ls)
+            final = final + list(set(ls))
+        return final
+
     def train(self, train_data, train_labels):
         for x in range(self.ntrees):
+            if x % 20 == 0:
+                print("Training tree number %i" % (x))
             bag = choice(len(train_data), len(train_data), True)
-            # print("Training tree number %i" % (x))
             tree = DecisionTree(self.tree_params)
             tree.train(train_data[bag], train_labels[bag])
             self.trees.append(tree)
@@ -32,8 +41,6 @@ class RandomForest:
     def predict(self, data):
         preds = pd.DataFrame(np.array([tree.predict(data)
                                        for tree in self.trees]))
-        #print(preds.shape)
-        #print(preds)
         return preds.apply(lambda x: x.value_counts().argmax())
 
     def score(self, test_data, answers):
@@ -64,6 +71,12 @@ class DecisionTree:
                                                         str(self.node),
                                                         self.random_subset,
                                                         self.subset_size)
+
+    def get_splits(self, row, feature_dict):
+        return self.node.get_splits(row, feature_dict)
+
+    def get_split_data(self, ls):
+        return self.node.get_split_data(ls)
 
     def entropy_from(self, labels):
         probs = itemfreq(labels)[:, 1] / len(labels)
@@ -167,14 +180,29 @@ class Node:
         right = np.where(data[:, self.feature] > self.split_rule)
         return data[left], data[right], labels[left], labels[right]
 
+    def get_splits(self, row, feature_dict):
+        left = np.where(row[:, self.feature] <= self.split_rule)
+        right = np.where(row[:, self.feature] > self.split_rule)
+        if len(row[left]) == 0 and self.right.node != None:
+            print(feature_dict[self.feature], " > ", self.split_rule)
+            return self.right.node.get_splits(row, feature_dict)
+        if len(row[right]) == 0 and self.left.node != None:
+            print(feature_dict[self.feature], " <= ", self.split_rule)
+            return self.left.node.get_splits(row, feature_dict)
+        else:
+            print("End of tree, outputting label", self.label)
+            return self.label
+
+    def get_split_data(self, ls):
+        ls.append((self.feature, self.split_rule))
+        if self.right.node != None:
+            self.right.node.get_split_data(ls)
+        if self.left.node != None:
+            self.left.node.get_split_data(ls)
+
     def predict(self, row):
         left = np.where(row[:, self.feature] <= self.split_rule)
         right = np.where(row[:, self.feature] > self.split_rule)
-        # print(self, "making a prediction")
-        # print("Go left: %i, Go Right: %i" % (len(row[left]), len(row[right])))
-        # print("Has left: %i, Has Right: %i" %
-        #       (self.left.node != None, self.right.node != None))
-
         if len(row[left]) == 0 and self.right.node != None:
             return self.right.node.predict(row)
         if len(row[right]) == 0 and self.left.node != None:
