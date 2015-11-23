@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import datetime
 
 
 def shape_check(checks):
@@ -82,8 +83,8 @@ class NeuralNet:
         self.cost_func = cost_func
         self.cost_prime = cost_prime
 
-        self.train_scores = []
-        self.train_params = {}
+        self.val_scores = []
+        self.train_params = {}  # filled in when we train
 
     def check_shapes(self):
         self.hidden_layer.check_shapes()
@@ -93,17 +94,22 @@ class NeuralNet:
         "Train our Network Using the Inputs and Labels"
         input_dim = len(inputs[0])
         output_dim = len(labels[0])
+
+        val_score = False
+        XVal, yVal = kwargs.get("XVal", None), kwargs.get("yVal", None)
+
         self.train_params = kwargs
+        del self.train_params['XVal']
+        del self.train_params['yVal']
 
         num_iters = kwargs.get("num_iters", 1000)
+        eta = kwargs.get("eta", 0.01)
         score_every = kwargs.get("score_every", num_iters / 10)
-        train_score = kwargs.get("train_score", True)
-        val_score = False
 
-        XVal, yVal = kwargs.get("XVal", None), kwargs.get("yVal", None)
         if XVal != None:
             val_score = True
-        eta = kwargs.get("eta", 0.01)
+        start = datetime.datetime.now()
+        self.train_params['start'] = start
 
         for _ in range(num_iters):
             ex_index = np.random.choice(len(inputs), 1)
@@ -123,13 +129,13 @@ class NeuralNet:
             self.output_layer.update_weights(self.hidden_layer.y, eta)
             self.hidden_layer.update_weights(y_0, eta)
 
-            if _ % score_every == 0:
-                if train_score:
-                    t_score = self.score(inputs, labels)
-                    self.train_scores.append((t_score, _))
-                if val_score:
-                    v_score = self.score(XVal, yVal)
-                    self.val_scores.append(v_score, _)
+            if val_score and _ % score_every == 0:
+                v_score = self.score(XVal, yVal)
+                self.val_scores.append((v_score, v_score / len(XVal), _))
+
+        end = datetime.datetime.now()
+        self.train_params['end'] = end
+        print("Total Train Time %.2f Seconds" % (end - start).total_seconds())
 
     def predict(self, inputs):
         temp = inputs
@@ -141,7 +147,7 @@ class NeuralNet:
         preds = self.predict(inputs)
         return sum(preds != labels.argmax(axis=1))
 
-    def plot_scores(self):
-        scoredf = pd.DataFrame(self.train_scores)
-        scoredf.columns = ['train', 'iter']
-        scoredf.plot(x='iter')
+    def resulting_scores(self):
+        scoredf = pd.DataFrame(self.val_scores)
+        scoredf.columns = ['val', 'val_score', 'iter']
+        return scoredf
