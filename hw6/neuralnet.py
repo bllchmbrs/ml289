@@ -20,7 +20,7 @@ class Layer:
         self.rows, self.cols = shape
         self.z = np.zeros(self.cols, dtype=np.float64)
         self.y = np.zeros(self.cols, dtype=np.float64)
-        self.b = np.zeros(self.cols, dtype=np.float64)
+        self.b = np.ones(self.cols, dtype=np.float64)
         self.w = np.random.normal(0, 0.01, shape)
 
         self.a_func = activation_func
@@ -59,7 +59,7 @@ class Layer:
     def update_weights(self, previous_y, eta):
         np.outer(previous_y, self.delta, out=self.update)
         self.w -= (eta * self.update)
-        self.b -= (eta * np.sum(self.delta, axis=0))
+        self.b -= (eta * self.delta)
 
     def transform(self, data):
         return self.a_func(data.dot(self.w) + self.b)
@@ -145,9 +145,9 @@ class NeuralNet:
 
     def score(self, inputs, labels):
         preds = self.predict(inputs)
-        return sum(preds != labels.argmax(axis=1))
+        return sum(preds == labels.argmax(axis=1))
 
     def resulting_scores(self):
         scoredf = pd.DataFrame(self.val_scores)
-        scoredf.columns = ['val', 'val_score', 'iter']
+        scoredf.columns = ['val', 'val_accuracy', 'iter']
         return scoredf
